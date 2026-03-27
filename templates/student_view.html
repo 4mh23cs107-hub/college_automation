@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}My Records{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>My Records</h1>
+  {% if not student %}
+    <p class="muted">No student record found for your account.</p>
+  {% else %}
+    <h3>{{ student.name }} ({{ student.usn }})</h3>
+    <h4>Marks</h4>
+    <table class="table"><thead><tr><th>Subject</th><th>Total</th></tr></thead>
+      <tbody>
+        {% for m in marks %}
+        <tr><td>{{ m.subject }}</td><td>{{ '%.2f'|format(m.total) }}</td></tr>
+        {% endfor %}
+      </tbody></table>
+
+    <h4>Attendance</h4>
+    <table class="table"><thead><tr><th>Subject</th><th>Attended</th><th>Total</th><th>Percentage</th></tr></thead>
+      <tbody>
+        {% for a in attendance %}
+        <tr>
+          <td>{{ a.subject.name }}</td>
+          <td>{{ a.attended }}</td>
+          <td>{{ a.total }}</td>
+          <td>{% if a.total %}{{ '%.1f'|format((a.attended/a.total)*100) }}%{% else %}-{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody></table>
+  {% endif %}
+</div>
+{% endblock %}

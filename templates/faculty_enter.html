@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Enter Marks & Attendance{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Enter Marks & Attendance</h1>
+  <form method="post">
+    <label class="label">Subject</label>
+    <select name="subject">
+      {% for s in subjects %}
+      <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
+      {% endfor %}
+    </select>
+    <label class="label">Student</label>
+    <select name="student">
+      {% for st in students %}
+      <option value="{{ st.id }}">{{ st.usn }} — {{ st.name }}</option>
+      {% endfor %}
+    </select>
+    <label class="label">Internal Marks</label>
+    <input name="internal" type="number" step="0.1" />
+    <label class="label">External Marks</label>
+    <input name="external" type="number" step="0.1" />
+    <label class="label">Attended Sessions</label>
+    <input name="attended" type="number" />
+    <label class="label">Total Sessions</label>
+    <input name="total" type="number" />
+    <div style="margin-top:12px">
+      <button class="btn" type="submit">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

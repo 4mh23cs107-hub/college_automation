@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style> .dash{max-width:860px;margin:40px auto;padding:20px;background:#fff;border-radius:8px;text-align:center} .meta{color:#6b7280;margin-top:8px}</style>
+</head>
+<body>
+  <div class="container">
+    <div class="dash">
+      <h1 id="title">Welcome</h1>
+      <p class="meta" id="meta">Loading...</p>
+      <div style="margin-top:18px">
+        <button id="logout" class="btn">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const title = document.getElementById('title');
+      const meta = document.getElementById('meta');
+      const logout = document.getElementById('logout');
+
+      const params = new URLSearchParams(location.search);
+      const roleFromQuery = params.get('role');
+      let auth = null;
+      try{ auth = JSON.parse(localStorage.getItem('college_auth')); }catch(e){ auth = null; }
+
+      const role = roleFromQuery || (auth && auth.role) || 'Guest';
+      const email = (auth && auth.email) || 'unknown';
+
+      title.textContent = role + ' Dashboard';
+      meta.textContent = 'Signed in as ' + email + ' — role: ' + role;
+
+      logout.addEventListener('click', ()=>{
+        try{ localStorage.removeItem('college_auth'); }catch(_){}
+        location.href = 'index.html';
+      });
+    })();
+  </script>
+</body>
+</html>

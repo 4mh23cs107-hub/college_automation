@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}HOD Dashboard{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>HOD Dashboard</h1>
+  <ul>
+    <li><a href="{{ url_for('hod_assign') }}">Assign Faculty to Subjects</a></li>
+    <li><a href="#">View Faculty</a></li>
+  </ul>
+</div>
+{% endblock %}

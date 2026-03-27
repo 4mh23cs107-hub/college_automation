@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Add Subject{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Add Subject</h1>
+  <form method="post">
+    <label class="label">Subject Code</label>
+    <input name="code" placeholder="CS101" required />
+    <label class="label">Subject Name</label>
+    <input name="name" placeholder="Operating Systems" required />
+    <label class="label">Dept</label>
+    <input name="dept" placeholder="CSE" />
+    <label class="label">Semester</label>
+    <input name="semester" type="number" min="1" max="8" />
+    <div style="margin-top:12px">
+      <button class="btn" type="submit">Add Subject</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

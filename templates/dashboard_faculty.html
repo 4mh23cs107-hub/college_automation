@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Faculty Dashboard{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Faculty Dashboard</h1>
+  <ul>
+    <li><a href="{{ url_for('faculty_enter') }}">Enter Marks & Attendance</a></li>
+    <li><a href="{{ url_for('faculty_add_subject') }}">Add Subject (manual)</a></li>
+  </ul>
+</div>
+{% endblock %}

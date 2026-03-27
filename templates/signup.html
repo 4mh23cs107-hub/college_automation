@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Sign Up</h1>
+  <form method="post">
+    <label class="label">Username</label>
+    <input name="username" placeholder="username or USN for students" required />
+    <label class="label">Password</label>
+    <input name="password" type="password" placeholder="password" required />
+    <label class="label">Role</label>
+    <select name="role">
+      <option>Student</option>
+      <option>Faculty</option>
+      <option>HOD</option>
+      <option>Admin</option>
+    </select>
+    <div style="margin-top:12px">
+      <button class="btn" type="submit">Create</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

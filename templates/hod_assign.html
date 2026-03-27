@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Assign Faculty{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Assign Faculty to Subject</h1>
+  <form method="post">
+    <label class="label">Faculty</label>
+    <select name="faculty">
+      {% for f in faculties %}
+      <option value="{{ f.id }}">{{ f.username }}</option>
+      {% endfor %}
+    </select>
+    <label class="label">Subject</label>
+    <select name="subject">
+      {% for s in subjects %}
+      <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
+      {% endfor %}
+    </select>
+    <div style="margin-top:12px">
+      <button class="btn" type="submit">Assign</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

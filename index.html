@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>College Automation — Login</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <form id="loginForm" class="card" novalidate>
+      <h1>Sign in</h1>
+
+      <label class="label" for="username">Username</label>
+      <input id="username" type="text" placeholder="USN for students (e.g. 1PV16CS001)" required />
+
+      <label class="label" for="password">Password</label>
+      <div class="pwd-row">
+        <input id="password" type="password" placeholder="••••••••" required />
+        <button type="button" id="togglePwd" class="toggle">Show</button>
+      </div>
+
+      <fieldset class="role-field">
+        <legend class="label">Role</legend>
+        <label><input type="radio" name="role" value="Student" checked /> Student</label>
+        <label><input type="radio" name="role" value="Faculty" /> Faculty</label>
+        <label><input type="radio" name="role" value="HOD" /> HOD</label>
+        <label><input type="radio" name="role" value="Admin" /> Admin</label>
+      </fieldset>
+
+      <div class="actions">
+        <label class="remember"><input id="remember" type="checkbox" /> Remember me</label>
+        <button type="submit" class="btn">Login</button>
+      </div>
+
+      <p class="error" id="error"></p>
+    </form>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

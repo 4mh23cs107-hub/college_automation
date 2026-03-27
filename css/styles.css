@@ -1,0 +1,22 @@
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --accent:#0b63d6;
+  --muted:#6b7280;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#111}
+.container{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:100%;max-width:420px;background:var(--card);padding:28px;border-radius:10px;box-shadow:0 6px 24px rgba(12,20,40,0.08)}
+h1{margin:0 0 18px;font-size:22px}
+.label{display:block;margin-top:12px;margin-bottom:6px;font-size:13px;color:var(--muted)}
+input[type="email"], input[type="password"], select{width:100%;padding:10px 12px;border:1px solid #e6e9ef;border-radius:8px;font-size:15px}
+.pwd-row{display:flex;gap:8px}
+.pwd-row .toggle{padding:8px 10px;border:1px solid #e6e9ef;background:#fff;border-radius:8px;cursor:pointer}
+.role-field{display:flex;gap:10px;align-items:center;margin-top:10px;border:none;padding:0}
+.role-field label{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.remember{font-size:13px;color:var(--muted)}
+.btn{background:var(--accent);color:#fff;padding:10px 16px;border:none;border-radius:8px;cursor:pointer}
+.error{margin-top:14px;color:#b21c1c;font-size:14px;min-height:20px}
+@media (max-width:420px){.card{padding:18px}}

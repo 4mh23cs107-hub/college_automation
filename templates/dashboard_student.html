@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Student Dashboard</h1>
+  <ul>
+    <li><a href="{{ url_for('student_view') }}">View My Attendance & Marks</a></li>
+  </ul>
+</div>
+{% endblock %}
