@@ -50,11 +50,11 @@ pip install -r requirements.txt
 python create_db.py
 ```
 
-3. Run the app:
+3. Run the app (FastAPI backend):
 
 ```powershell
-python app.py
-# open http://127.0.0.1:5000
+uvicorn fastapi_app:app --reload
+# open http://127.0.0.1:8000
 ```
 
 Demo accounts created by `create_db.py`:

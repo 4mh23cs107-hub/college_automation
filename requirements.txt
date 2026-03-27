@@ -1,6 +1,7 @@
-Flask-Login==0.6.2
-Flask-SQLAlchemy==3.0.3
-# psycopg2-binary is optional (Postgres). Install manually if using PostgreSQL.
-# psycopg2-binary==2.9.10
+fastapi==0.113.3
+uvicorn[standard]==0.24.0
+SQLAlchemy==2.0.32
 python-dotenv==1.0.0
 Werkzeug==2.3.6
+Jinja2==3.1.2
+

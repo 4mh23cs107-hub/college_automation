@@ -1,32 +1,90 @@
 {% extends 'base.html' %}
 {% block title %}Enter Marks & Attendance{% endblock %}
 {% block content %}
-<div class="card">
-  <h1>Enter Marks & Attendance</h1>
-  <form method="post">
-    <label class="label">Subject</label>
-    <select name="subject">
-      {% for s in subjects %}
-      <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
+<div class="page-header">
+  <h1>Faculty: Enter Academic Data</h1>
+</div>
+<div class="split-card">
+  <section class="mini-card">
+    <h2>Marks</h2>
+    <form method="post" action="/faculty/enter/marks">
+      <label class="label">Subject</label>
+      <select name="subject">
+        {% for s in subjects %}
+        <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
+        {% endfor %}
+      </select>
+      <label class="label">Student</label>
+      <select name="student">
+        {% for st in students %}
+        <option value="{{ st.id }}">{{ st.usn }} — {{ st.name }}</option>
+        {% endfor %}
+      </select>
+      <label class="label">Internal Marks</label>
+      <input name="internal" type="number" step="0.1" min="0" max="100" required />
+      <label class="label">External Marks</label>
+      <input name="external" type="number" step="0.1" min="0" max="100" required />
+      <div class="actions">
+        <button class="btn" type="submit">Save Marks</button>
+      </div>
+    </form>
+
+    <h3>Existing Marks</h3>
+    <table class="grid">
+      <thead><tr><th>Student</th><th>Subject</th><th>Internal</th><th>External</th><th>Total</th></tr></thead>
+      <tbody>
+      {% for m in marks %}
+      <tr>
+        <td>{{ m.student.usn }}</td>
+        <td>{{ m.subject.code }}</td>
+        <td>{{ m.internal }}</td>
+        <td>{{ m.external }}</td>
+        <td>{{ (m.internal or 0) + (m.external or 0) }}</td>
+      </tr>
       {% endfor %}
-    </select>
-    <label class="label">Student</label>
-    <select name="student">
-      {% for st in students %}
-      <option value="{{ st.id }}">{{ st.usn }} — {{ st.name }}</option>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="mini-card">
+    <h2>Attendance</h2>
+    <form method="post" action="/faculty/enter/attendance">
+      <label class="label">Subject</label>
+      <select name="subject">
+        {% for s in subjects %}
+        <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
+        {% endfor %}
+      </select>
+      <label class="label">Student</label>
+      <select name="student">
+        {% for st in students %}
+        <option value="{{ st.id }}">{{ st.usn }} — {{ st.name }}</option>
+        {% endfor %}
+      </select>
+      <label class="label">Attended Classes</label>
+      <input name="attended" type="number" min="0" required />
+      <label class="label">Total Classes</label>
+      <input name="total" type="number" min="0" required />
+      <div class="actions">
+        <button class="btn" type="submit">Save Attendance</button>
+      </div>
+    </form>
+
+    <h3>Attendance Journal</h3>
+    <table class="grid">
+      <thead><tr><th>Student</th><th>Subject</th><th>Attended</th><th>Total</th><th>Percent</th></tr></thead>
+      <tbody>
+      {% for a in attendance %}
+      <tr>
+        <td>{{ a.student.usn }}</td>
+        <td>{{ a.subject.code }}</td>
+        <td>{{ a.attended }}</td>
+        <td>{{ a.total }}</td>
+        <td>{{ '%.1f' % ((a.attended / a.total * 100) if a.total else 0) }}%</td>
+      </tr>
       {% endfor %}
-    </select>
-    <label class="label">Internal Marks</label>
-    <input name="internal" type="number" step="0.1" />
-    <label class="label">External Marks</label>
-    <input name="external" type="number" step="0.1" />
-    <label class="label">Attended Sessions</label>
-    <input name="attended" type="number" />
-    <label class="label">Total Sessions</label>
-    <input name="total" type="number" />
-    <div style="margin-top:12px">
-      <button class="btn" type="submit">Save</button>
-    </div>
-  </form>
+      </tbody>
+    </table>
+  </section>
 </div>
 {% endblock %}

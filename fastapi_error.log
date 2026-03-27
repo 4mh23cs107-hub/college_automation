@@ -1,0 +1,2593 @@
+2026-03-27 20:30:51,804 - ERROR - 
+-----
+TIME: 2026-03-27T15:00:51.803838Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:19,351 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:19.351049Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:22,505 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:22.505738Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:22,737 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:22.737793Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:22,867 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:22.867815Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:23,048 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:23.048362Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:23,236 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:23.236697Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:23,450 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:23.449987Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:23,625 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:23.625093Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:23,819 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:23.818941Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:23,989 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:23.989028Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:24,155 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:24.155673Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:24,322 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:24.322515Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:24,541 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:24.541544Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:37,031 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:37.031118Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:37,215 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:37.214977Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:37,449 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:37.449700Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:52,213 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:52.213878Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:52,410 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:52.410356Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:52,567 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:52.567697Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:52,758 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:52.757951Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 20:38:52,978 - ERROR - 
+-----
+TIME: 2026-03-27T15:08:52.978168Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 21:24:44,858 - ERROR - 
+-----
+TIME: 2026-03-27T15:54:44.858041Z
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\fastapi\routing.py", line 330, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 200, in login_get
+    return templates.TemplateResponse(request, 'login.html', {'request': request, 'user': get_current_user(request, db), 'messages': consume_flash(request)})
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 21:38:38,706 - ERROR - 
+-----
+TIME: 2026-03-27T16:08:38.706243Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 21:51:19,812 - ERROR - 
+-----
+TIME: 2026-03-27T16:21:19.812580Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 21:51:23,419 - ERROR - 
+-----
+TIME: 2026-03-27T16:21:23.419567Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 21:51:24,120 - ERROR - 
+-----
+TIME: 2026-03-27T16:21:24.120286Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 21:51:24,299 - ERROR - 
+-----
+TIME: 2026-03-27T16:21:24.299175Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 21:51:24,531 - ERROR - 
+-----
+TIME: 2026-03-27T16:21:24.531155Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:17:49,557 - ERROR - 
+-----
+TIME: 2026-03-27T16:47:49.557814Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:20:15,038 - ERROR - 
+-----
+TIME: 2026-03-27T16:50:15.038662Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:22:25,275 - ERROR - 
+-----
+TIME: 2026-03-27T16:52:25.275517Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:22:28,374 - ERROR - 
+-----
+TIME: 2026-03-27T16:52:28.374146Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:22:28,856 - ERROR - 
+-----
+TIME: 2026-03-27T16:52:28.856438Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:22:29,047 - ERROR - 
+-----
+TIME: 2026-03-27T16:52:29.047360Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:22:29,245 - ERROR - 
+-----
+TIME: 2026-03-27T16:52:29.245606Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:22:29,432 - ERROR - 
+-----
+TIME: 2026-03-27T16:52:29.432163Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:22:29,604 - ERROR - 
+-----
+TIME: 2026-03-27T16:52:29.604264Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
+2026-03-27 22:22:29,822 - ERROR - 
+-----
+TIME: 2026-03-27T16:52:29.822593Z
+TEMPLATE: login.html
+PATH: /login
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\fastapi_app.py", line 61, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\login.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "templates\base.html", line 7, in top-level template code
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\templating.py", line 110, in url_for
+    return request.url_for(name, **path_params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\requests.py", line 201, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "C:\Users\poorv\OneDrive\Desktop\college_automation\venv\Lib\site-packages\starlette\routing.py", line 627, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "static" and params "filename".
+
+
