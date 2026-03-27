@@ -1,20 +1,48 @@
 {% extends 'base.html' %}
 {% block title %}Edit Student{% endblock %}
 {% block content %}
-<div class="card">
-  <h1>Edit Student</h1>
-  <form method="post">
-    <label class="label">USN (readonly)</label>
-    <input value="{{ student.usn }}" readonly />
-    <label class="label">Name</label>
-    <input name="name" value="{{ student.name }}" required />
-    <label class="label">Dept</label>
-    <input name="dept" value="{{ student.dept }}" />
-    <label class="label">Semester</label>
-    <input name="semester" type="number" min="1" max="8" value="{{ student.semester }}" />
-    <div style="margin-top:12px">
-      <button class="btn" type="submit">Save</button>
-    </div>
-  </form>
+<div style="max-width: 600px; margin: 0 auto;">
+  <div class="card">
+    <h1 style="font-size: 2em; color: #333; margin-bottom: 30px;">✏️ Edit Student Details</h1>
+    
+    <form method="post">
+      <div class="form-group">
+        <label>Student USN (Read-only)</label>
+        <input type="text" value="{{ student.usn }}" readonly style="background-color: #f5f5f5; cursor: not-allowed;" />
+      </div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="name" value="{{ student.name }}" placeholder="Enter student's full name" required />
+      </div>
+
+      <div class="form-group">
+        <label>Department</label>
+        <select name="dept">
+          <option value="">-- Select Department --</option>
+          <option value="CSE" {% if student.dept == 'CSE' %}selected{% endif %}>Computer Science & Engineering</option>
+          <option value="ECE" {% if student.dept == 'ECE' %}selected{% endif %}>Electronics & Communication</option>
+          <option value="ME" {% if student.dept == 'ME' %}selected{% endif %}>Mechanical Engineering</option>
+          <option value="EE" {% if student.dept == 'EE' %}selected{% endif %}>Electrical Engineering</option>
+          <option value="CIVIL" {% if student.dept == 'CIVIL' %}selected{% endif %}>Civil Engineering</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Semester</label>
+        <select name="semester">
+          <option value="">-- Select Semester --</option>
+          {% for sem in range(1, 9) %}
+          <option value="{{ sem }}" {% if student.semester == sem %}selected{% endif %}>{{ sem }}{% if sem == 1 %}st{% elif sem == 2 %}nd{% elif sem == 3 %}rd{% else %}th{% endif %} Semester</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 30px;">
+        <button type="submit" style="flex: 1; padding: 12px;">💾 Save Changes</button>
+        <a href="{{ url_for('admin_students') }}" style="flex: 1; padding: 12px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px; text-align: center; cursor: pointer; border: none;">❌ Cancel</a>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

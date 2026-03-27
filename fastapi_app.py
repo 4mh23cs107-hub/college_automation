@@ -1,15 +1,18 @@
 import os
 import logging
+import traceback
+from datetime import datetime
 from fastapi import FastAPI, Request, Depends, Form, HTTPException, status
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import declarative_base, relationship, Session
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Define the engine before usage
 DB_PATH = os.getenv('DATABASE_URL', f'sqlite:///{os.path.join(os.path.dirname(__file__), "college.db")}')
@@ -187,9 +190,11 @@ def get_current_user(request: Request, db: Session):
 def require_role(request: Request, db: Session, roles=None):
     user = get_current_user(request, db)
     if not user:
-        raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, detail='Login required')
+        flash(request, 'You need to login first', 'warning')
+        raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, detail='Login required', headers={"Location": "/login"})
     if roles and user.role not in roles:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Unauthorized')
+        flash(request, 'You do not have permission to access this page', 'danger')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Unauthorized', headers={"Location": "/dashboard"})
     return user
 
 
@@ -340,6 +345,75 @@ def hod_assign_post(request: Request, faculty: int = Form(...), subject: int = F
         db.commit()
         flash(request, 'Assigned successfully', 'success')
     return RedirectResponse('/hod/assign', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.get('/hod/faculty', response_class=HTMLResponse)
+def hod_view_faculty(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    faculties = db.query(User).filter(User.role == 'Faculty').all()
+    faculty_data = []
+    for fac in faculties:
+        assignments = db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == fac.id).all()
+        faculty_data.append({
+            'user': fac,
+            'assignments': assignments,
+            'num_subjects': len(assignments)
+        })
+    ctx = {'request': request, 'user': user, 'faculty_data': faculty_data, 'messages': consume_flash(request)}
+    return render_template_safe('hod_view_faculty.html', request, ctx)
+
+
+@app.get('/hod/students', response_class=HTMLResponse)
+def hod_view_students(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    students = db.query(Student).all()
+    ctx = {'request': request, 'user': user, 'students': students, 'messages': consume_flash(request)}
+    return render_template_safe('hod_view_students.html', request, ctx)
+
+
+@app.get('/faculty/subjects', response_class=HTMLResponse)
+def faculty_view_subjects(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['Faculty'])
+    assignments = db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()
+    subjects = [a.subject for a in assignments]
+    ctx = {'request': request, 'user': user, 'subjects': subjects, 'messages': consume_flash(request)}
+    return render_template_safe('faculty_view_subjects.html', request, ctx)
+
+
+@app.get('/faculty/marks', response_class=HTMLResponse)
+def faculty_view_marks(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['Faculty'])
+    assigned = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    students = db.query(Student).all()
+    marks = db.query(Marks).all()
+    ctx = {
+        'request': request,
+        'user': user,
+        'subjects': assigned,
+        'students': students,
+        'marks': marks,
+        'messages': consume_flash(request),
+        'view_type': 'marks'
+    }
+    return render_template_safe('faculty_enter.html', request, ctx)
+
+
+@app.get('/faculty/attendance', response_class=HTMLResponse)
+def faculty_view_attendance(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['Faculty'])
+    assigned = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    students = db.query(Student).all()
+    attendance = db.query(Attendance).all()
+    ctx = {
+        'request': request,
+        'user': user,
+        'subjects': assigned,
+        'students': students,
+        'attendance': attendance,
+        'messages': consume_flash(request),
+        'view_type': 'attendance'
+    }
+    return render_template_safe('faculty_enter.html', request, ctx)
 
 
 @app.get('/admin/students', response_class=HTMLResponse)

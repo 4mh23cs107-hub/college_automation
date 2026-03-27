@@ -1,90 +1,267 @@
 {% extends 'base.html' %}
-{% block title %}Enter Marks & Attendance{% endblock %}
+{% block title %}{% if view_type == 'marks' %}Enter Marks{% elif view_type == 'attendance' %}Mark Attendance{% else %}Enter Marks & Attendance{% endif %}{% endblock %}
 {% block content %}
-<div class="page-header">
-  <h1>Faculty: Enter Academic Data</h1>
-</div>
-<div class="split-card">
-  <section class="mini-card">
-    <h2>Marks</h2>
-    <form method="post" action="/faculty/enter/marks">
-      <label class="label">Subject</label>
-      <select name="subject">
-        {% for s in subjects %}
-        <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
-        {% endfor %}
-      </select>
-      <label class="label">Student</label>
-      <select name="student">
-        {% for st in students %}
-        <option value="{{ st.id }}">{{ st.usn }} — {{ st.name }}</option>
-        {% endfor %}
-      </select>
-      <label class="label">Internal Marks</label>
-      <input name="internal" type="number" step="0.1" min="0" max="100" required />
-      <label class="label">External Marks</label>
-      <input name="external" type="number" step="0.1" min="0" max="100" required />
-      <div class="actions">
-        <button class="btn" type="submit">Save Marks</button>
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+  {% if view_type == 'marks' %}
+    <h1 style="font-size: 2.5em; color: #ffffff; margin-bottom: 10px; text-align: center;">📝 Enter Marks</h1>
+    <p style="text-align: center; color: #e0e0e0; margin-bottom: 30px;">Enter internal and external marks for students</p>
+  {% elif view_type == 'attendance' %}
+    <h1 style="font-size: 2.5em; color: #ffffff; margin-bottom: 10px; text-align: center;">📍 Mark Attendance</h1>
+    <p style="text-align: center; color: #e0e0e0; margin-bottom: 30px;">Record attendance for your subjects</p>
+  {% else %}
+    <h1 style="font-size: 2.5em; color: #ffffff; margin-bottom: 10px; text-align: center;">📊 Marks & Attendance</h1>
+    <p style="text-align: center; color: #e0e0e0; margin-bottom: 30px;">Manage marks and attendance records</p>
+  {% endif %}
+
+  {% if view_type != 'marks' and view_type != 'attendance' %}
+    <!-- View Toggle Buttons -->
+    <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 30px;">
+      <a href="{{ url_for('faculty_view_marks') }}" class="view-btn" style="background-color: #0066cc; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; cursor: pointer;">📝 Marks Only</a>
+      <a href="{{ url_for('faculty_view_attendance') }}" class="view-btn" style="background-color: #6c757d; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; cursor: pointer;">📍 Attendance Only</a>
+    </div>
+  {% endif %}
+
+  <!-- Marks Section -->
+  {% if not view_type or view_type == 'marks' %}
+    <div style="{% if view_type == 'attendance' %}display: none;{% endif %}">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px;">
+        <div>
+          <div class="card" style="margin-bottom: 20px;">
+            <h2 style="font-size: 1.3em; color: #0066cc; margin-bottom: 20px;">✏️ Enter Marks</h2>
+            <form method="post" action="/faculty/enter/marks">
+              <div class="form-group">
+                <label style="color: #1a1a2e; font-weight: 600;">Subject</label>
+                <select name="subject" required style="color: #1a1a2e;">
+                  <option value="">-- Select Subject --</option>
+                  {% for s in subjects %}
+                  <option value="{{ s.id }}">{{ s.subject_code }} — {{ s.subject_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label style="color: #1a1a2e; font-weight: 600;">Student</label>
+                <select name="student" required style="color: #1a1a2e;">
+                  <option value="">-- Select Student --</option>
+                  {% for st in students %}
+                  <option value="{{ st.id }}">{{ st.usn }} — {{ st.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label style="color: #1a1a2e; font-weight: 600;">Internal Marks (out of 50)</label>
+                <input type="number" name="internal" step="0.5" min="0" max="50" placeholder="0-50" required style="color: #1a1a2e;" />
+              </div>
+
+              <div class="form-group">
+                <label style="color: #1a1a2e; font-weight: 600;">External Marks (out of 100)</label>
+                <input type="number" name="external" step="0.5" min="0" max="100" placeholder="0-100" required style="color: #1a1a2e;" />
+              </div>
+
+              <button type="submit" style="width: 100%; padding: 12px; background-color: #0066cc; color: white; font-weight: 600; border: none; border-radius: 5px; cursor: pointer;">💾 Save Marks</button>
+            </form>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <h3 style="font-size: 1.2em; color: #1a1a2e; margin-bottom: 15px;">📊 Entered Marks</h3>
+            {% if marks and marks|length > 0 %}
+              <div style="overflow-x: auto;">
+                <table style="color: #1a1a2e;">
+                  <thead>
+                    <tr style="background-color: #f5f5f5;">
+                      <th style="color: #1a1a2e;">Student (USN)</th>
+                      <th style="color: #1a1a2e;">Subject</th>
+                      <th style="color: #1a1a2e;">Internal</th>
+                      <th style="color: #1a1a2e;">External</th>
+                      <th style="color: #1a1a2e;">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for m in marks %}
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="color: #666;">{{ m.student.usn }}</td>
+                      <td style="color: #666;">{{ m.subject.subject_code }}</td>
+                      <td style="color: #666;">{{ m.internal or '-' }}</td>
+                      <td style="color: #666;">{{ m.external or '-' }}</td>
+                      <td style="font-weight: bold; color: #0066cc;">{{ (m.internal or 0) + (m.external or 0) }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <p style="text-align: center; color: #999; padding: 20px;">📭 No marks entered yet.</p>
+            {% endif %}
+          </div>
+        </div>
       </div>
-    </form>
+    </div>
+  {% endif %}
 
-    <h3>Existing Marks</h3>
-    <table class="grid">
-      <thead><tr><th>Student</th><th>Subject</th><th>Internal</th><th>External</th><th>Total</th></tr></thead>
-      <tbody>
-      {% for m in marks %}
-      <tr>
-        <td>{{ m.student.usn }}</td>
-        <td>{{ m.subject.code }}</td>
-        <td>{{ m.internal }}</td>
-        <td>{{ m.external }}</td>
-        <td>{{ (m.internal or 0) + (m.external or 0) }}</td>
-      </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </section>
+  <!-- Attendance Section -->
+  {% if not view_type or view_type == 'attendance' %}
+    <div style="margin-top: 30px; {% if view_type == 'marks' %}display: none;{% endif %}">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px;">
+        <div>
+          <div class="card" style="margin-bottom: 20px;">
+            <h2 style="font-size: 1.3em; color: #0066cc; margin-bottom: 20px;">✏️ Mark Attendance</h2>
+            <form method="post" action="/faculty/enter/attendance">
+              <div class="form-group">
+                <label style="color: #1a1a2e; font-weight: 600;">Subject</label>
+                <select name="subject" required style="color: #1a1a2e;">
+                  <option value="">-- Select Subject --</option>
+                  {% for s in subjects %}
+                  <option value="{{ s.id }}">{{ s.subject_code }} — {{ s.subject_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
 
-  <section class="mini-card">
-    <h2>Attendance</h2>
-    <form method="post" action="/faculty/enter/attendance">
-      <label class="label">Subject</label>
-      <select name="subject">
-        {% for s in subjects %}
-        <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
-        {% endfor %}
-      </select>
-      <label class="label">Student</label>
-      <select name="student">
-        {% for st in students %}
-        <option value="{{ st.id }}">{{ st.usn }} — {{ st.name }}</option>
-        {% endfor %}
-      </select>
-      <label class="label">Attended Classes</label>
-      <input name="attended" type="number" min="0" required />
-      <label class="label">Total Classes</label>
-      <input name="total" type="number" min="0" required />
-      <div class="actions">
-        <button class="btn" type="submit">Save Attendance</button>
+              <div class="form-group">
+                <label style="color: #1a1a2e; font-weight: 600;">Student</label>
+                <select name="student" required style="color: #1a1a2e;">
+                  <option value="">-- Select Student --</option>
+                  {% for st in students %}
+                  <option value="{{ st.id }}">{{ st.usn }} — {{ st.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label style="color: #1a1a2e; font-weight: 600;">Classes Attended</label>
+                <input type="number" name="attended" min="0" placeholder="e.g., 25" required style="color: #1a1a2e;" />
+              </div>
+
+              <div class="form-group">
+                <label style="color: #1a1a2e; font-weight: 600;">Total Classes</label>
+                <input type="number" name="total" min="0" placeholder="e.g., 30" required style="color: #1a1a2e;" />
+              </div>
+
+              <button type="submit" style="width: 100%; padding: 12px; background-color: #0066cc; color: white; font-weight: 600; border: none; border-radius: 5px; cursor: pointer;">💾 Save Attendance</button>
+            </form>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <h3 style="font-size: 1.2em; color: #1a1a2e; margin-bottom: 15px;">📊 Attendance Records</h3>
+            {% if attendance and attendance|length > 0 %}
+              <div style="overflow-x: auto;">
+                <table style="color: #1a1a2e;">
+                  <thead>
+                    <tr style="background-color: #f5f5f5;">
+                      <th style="color: #1a1a2e;">Student (USN)</th>
+                      <th style="color: #1a1a2e;">Subject</th>
+                      <th style="color: #1a1a2e;">Attended</th>
+                      <th style="color: #1a1a2e;">Total</th>
+                      <th style="color: #1a1a2e;">%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for a in attendance %}
+                    {% set percentage = '%.1f' % ((a.attended / a.total * 100) if a.total else 0) %}
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="color: #666;">{{ a.student.usn }}</td>
+                      <td style="color: #666;">{{ a.subject.subject_code }}</td>
+                      <td style="color: #666;">{{ a.attended }}</td>
+                      <td style="color: #666;">{{ a.total }}</td>
+                      <td style="font-weight: bold; color: {% if percentage|float >= 75 %}#28a745{% elif percentage|float >= 60 %}#ffc107{% else %}#dc3545{% endif %};">
+                        {{ percentage }}%
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <p style="text-align: center; color: #999; padding: 20px;">📭 No attendance records yet.</p>
+            {% endif %}
+          </div>
+        </div>
       </div>
-    </form>
+    </div>
+  {% endif %}
 
-    <h3>Attendance Journal</h3>
-    <table class="grid">
-      <thead><tr><th>Student</th><th>Subject</th><th>Attended</th><th>Total</th><th>Percent</th></tr></thead>
-      <tbody>
-      {% for a in attendance %}
-      <tr>
-        <td>{{ a.student.usn }}</td>
-        <td>{{ a.subject.code }}</td>
-        <td>{{ a.attended }}</td>
-        <td>{{ a.total }}</td>
-        <td>{{ '%.1f' % ((a.attended / a.total * 100) if a.total else 0) }}%</td>
-      </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </section>
+  <div style="text-align: center; margin-top: 30px;">
+    <a href="{{ url_for('faculty_dashboard') }}" style="color: #0066cc; text-decoration: none; font-weight: 600;">← Back to Dashboard</a>
+  </div>
 </div>
+
+<style>
+  .card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #1a1a2e;
+    font-weight: 600;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #1a1a2e;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table th,
+  table td {
+    padding: 12px;
+    text-align: left;
+  }
+
+  table thead {
+    background-color: #f5f5f5;
+  }
+
+  table tbody tr:hover {
+    background-color: #fafafa;
+  }
+
+  .view-btn {
+    transition: all 0.3s;
+  }
+
+  .view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  @media (max-width: 768px) {
+    table {
+      font-size: 0.9em;
+    }
+    
+    table th, table td {
+      padding: 8px !important;
+    }
+  }
+</style>
 {% endblock %}

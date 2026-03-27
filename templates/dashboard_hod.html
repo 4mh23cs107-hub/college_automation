@@ -1,11 +1,161 @@
 {% extends 'base.html' %}
 {% block title %}HOD Dashboard{% endblock %}
 {% block content %}
-<div class="card">
-  <h1>HOD Dashboard</h1>
-  <ul>
-    <li><a href="{{ url_for('hod_assign') }}">Assign Faculty to Subjects</a></li>
-    <li><a href="#">View Faculty</a></li>
-  </ul>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 style="color: #ffffff;">👔 HOD Dashboard</h1>
+    <p style="color: #e0e0e0;">Welcome, {{ user.username }}!</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- Assign Faculty to Subjects -->
+    <div class="dashboard-card">
+      <div class="card-icon">👨‍💼</div>
+      <h2 style="color: #1a1a2e;">Assign Faculty to Subjects</h2>
+      <p style="color: #666666;">Manage faculty assignments and allocate subjects for the semester.</p>
+      <div class="card-actions">
+        <a href="{{ url_for('hod_assign') }}" class="btn btn-primary">Go to Assignments</a>
+      </div>
+    </div>
+
+    <!-- Faculty Management Card -->
+    <div class="dashboard-card">
+      <div class="card-icon">👥</div>
+      <h2 style="color: #1a1a2e;">Faculty Management</h2>
+      <p style="color: #666666;">View and manage faculty details and workload allocation.</p>
+      <div class="card-actions">
+        <a href="{{ url_for('hod_view_faculty') }}" class="btn btn-primary">View Faculty</a>
+      </div>
+    </div>
+
+    <!-- Student Records Card -->
+    <div class="dashboard-card">
+      <div class="card-icon">👨‍🎓</div>
+      <h2 style="color: #1a1a2e;">Student Records</h2>
+      <p style="color: #666666;">Monitor student data, enrollment, and academic progress.</p>
+      <div class="card-actions">
+        <a href="{{ url_for('hod_view_students') }}" class="btn btn-primary">View Students</a>
+      </div>
+    </div>
+
+    <!-- Attendance & Marks Card -->
+    <div class="dashboard-card">
+      <div class="card-icon">📊</div>
+      <h2 style="color: #1a1a2e;">Attendance & Marks</h2>
+      <p style="color: #666666;">Monitor attendance and internal marks for all subjects in your department.</p>
+      <div class="card-actions">
+        <a href="#" class="btn btn-secondary" style="opacity: 0.6;">Coming Soon</a>
+      </div>
+    </div>
+
+    <!-- Performance Analysis Card -->
+    <div class="dashboard-card">
+      <div class="card-icon">📈</div>
+      <h2 style="color: #1a1a2e;">Performance Analysis</h2>
+      <p style="color: #666666;">Analyze departmental performance and student outcomes.</p>
+      <div class="card-actions">
+        <a href="#" class="btn btn-secondary" style="opacity: 0.6;">Coming Soon</a>
+      </div>
+    </div>
+
+    <!-- Reports Card -->
+    <div class="dashboard-card">
+      <div class="card-icon">📋</div>
+      <h2 style="color: #1a1a2e;">Department Reports</h2>
+      <p style="color: #666666;">Generate comprehensive reports for departmental oversight.</p>
+      <div class="card-actions">
+        <a href="#" class="btn btn-secondary" style="opacity: 0.6;">Coming Soon</a>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dashboard-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5em;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.dashboard-header p {
+  color: #e0e0e0;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-icon {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.dashboard-card h2 {
+  font-size: 1.3em;
+  color: #1a1a2e;
+  margin: 10px 0;
+}
+
+.dashboard-card p {
+  color: #666666;
+  margin-bottom: 15px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 12px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background-color: #0052a3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+</style>
 {% endblock %}

@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% block title %}My Subjects{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1 style="color: #ffffff;">📚 My Assigned Subjects</h1>
+    <p style="color: #e0e0e0;">View subjects you are assigned to teach</p>
+  </div>
+
+  <a href="{{ url_for('faculty_dashboard') }}" class="btn btn-back">← Back to Dashboard</a>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.category }}" role="alert">{{ message.text }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="subjects-grid">
+    {% if subjects %}
+      {% for subject in subjects %}
+        <div class="subject-card">
+          <div class="subject-header">
+            <div class="subject-code" style="color: #0066cc; font-weight: bold;">{{ subject.subject_code }}</div>
+            <div class="semester-badge">SEM {{ subject.semester }}</div>
+          </div>
+          
+          <h2 style="color: #1a1a2e;">{{ subject.subject_name }}</h2>
+          
+          <div class="subject-details">
+            <div class="detail-row">
+              <span class="label" style="color: #666;">Department:</span>
+              <span class="value" style="color: #1a1a2e;">{{ subject.department }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label" style="color: #666;">Semester:</span>
+              <span class="value" style="color: #1a1a2e;">{{ subject.semester }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label" style="color: #666;">Credits:</span>
+              <span class="value" style="color: #1a1a2e;">{{ subject.credits }}</span>
+            </div>
+          </div>
+
+          <div class="subject-actions">
+            <a href="{{ url_for('faculty_view_marks') }}" class="btn btn-action">Enter Marks</a>
+            <a href="{{ url_for('faculty_view_attendance') }}" class="btn btn-action-secondary">Mark Attendance</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="alert alert-info" style="color: #0066cc;">
+        <h3 style="color: #0066cc;">No subjects assigned</h3>
+        <p style="color: #0066cc;">You don't have any subjects assigned yet. Please contact your HOD for assignments.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if subjects %}
+    <div class="summary-section">
+      <h3 style="color: #1a1a2e;">Summary</h3>
+      <p style="color: #666;">Total Subjects Assigned: <span style="color: #1a1a2e; font-weight: bold;">{{ subjects|length }}</span></p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5em;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.page-header p {
+  color: #e0e0e0;
+}
+
+.btn-back {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #6c757d;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+}
+
+.alert {
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #e7f3ff;
+  border-left: 4px solid #0066cc;
+}
+
+.alert h3 {
+  color: #0066cc;
+  margin-top: 0;
+}
+
+.alert p {
+  color: #0066cc;
+  margin-bottom: 0;
+}
+
+.subjects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.subject-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+  position: relative;
+}
+
+.subject-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.subject-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.subject-code {
+  font-size: 1.1em;
+  color: #0066cc;
+  font-weight: bold;
+}
+
+.semester-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.subject-card h2 {
+  color: #1a1a2e;
+  margin: 10px 0 15px 0;
+  font-size: 1.4em;
+}
+
+.subject-details {
+  background: #f9f9f9;
+  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 15px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  align-items: center;
+}
+
+.detail-row .label {
+  color: #666;
+  font-weight: 600;
+}
+
+.detail-row .value {
+  color: #1a1a2e;
+  font-weight: 500;
+}
+
+.subject-actions {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.btn-action {
+  padding: 10px 15px;
+  background-color: #0066cc;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-action:hover {
+  background-color: #0052a3;
+}
+
+.btn-action-secondary {
+  padding: 10px 15px;
+  background-color: #6c757d;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-action-secondary:hover {
+  background-color: #5a6268;
+}
+
+.summary-section {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.summary-section h3 {
+  color: #1a1a2e;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.summary-section p {
+  color: #666;
+  margin: 5px 0;
+}
+</style>
+{% endblock %}

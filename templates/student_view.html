@@ -1,32 +1,132 @@
 {% extends 'base.html' %}
-{% block title %}My Records{% endblock %}
+{% block title %}My Academic Records{% endblock %}
 {% block content %}
-<div class="card">
-  <h1>My Records</h1>
+<div class="records-container">
   {% if not student %}
-    <p class="muted">No student record found for your account.</p>
+    <div class="card" style="text-align: center; padding: 40px;">
+      <p style="color: #999; font-size: 1.1em;">❌ No student record found for your account.</p>
+      <p style="color: #999; margin-top: 10px;">Please contact your administrator.</p>
+    </div>
   {% else %}
-    <h3>{{ student.name }} ({{ student.usn }})</h3>
-    <h4>Marks</h4>
-    <table class="table"><thead><tr><th>Subject</th><th>Total</th></tr></thead>
-      <tbody>
-        {% for m in marks %}
-        <tr><td>{{ m.subject }}</td><td>{{ '%.2f'|format(m.total) }}</td></tr>
-        {% endfor %}
-      </tbody></table>
+    <!-- Student Info Card -->
+    <div class="card" style="margin-bottom: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h2 style="font-size: 1.8em; margin-bottom: 10px;">{{ student.name }}</h2>
+          <p style="margin: 5px 0;">📚 USN: <strong>{{ student.usn }}</strong></p>
+          <p style="margin: 5px 0;">🏢 Department: <strong>{{ student.dept or 'N/A' }}</strong></p>
+          <p style="margin: 5px 0;">📅 Semester: <strong>{{ student.semester or 'N/A' }}</strong></p>
+        </div>
+      </div>
+    </div>
 
-    <h4>Attendance</h4>
-    <table class="table"><thead><tr><th>Subject</th><th>Attended</th><th>Total</th><th>Percentage</th></tr></thead>
-      <tbody>
-        {% for a in attendance %}
-        <tr>
-          <td>{{ a.subject.name }}</td>
-          <td>{{ a.attended }}</td>
-          <td>{{ a.total }}</td>
-          <td>{% if a.total %}{{ '%.1f'|format((a.attended/a.total)*100) }}%{% else %}-{% endif %}</td>
-        </tr>
-        {% endfor %}
-      </tbody></table>
+    <!-- Marks Section -->
+    <div class="card" style="margin-bottom: 30px;">
+      <h3 style="font-size: 1.5em; color: #333; margin-bottom: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">📊 Your Marks</h3>
+      {% if marks %}
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Internal</th>
+                <th>External</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for m in marks %}
+              <tr>
+                <td style="font-weight: 500;">{{ m.subject }}</td>
+                <td>{{ m.internal or '-' }}</td>
+                <td>{{ m.external or '-' }}</td>
+                <td style="font-weight: bold; color: #667eea;">{{ '%.2f'|format(m.total) }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p style="text-align: center; color: #999; padding: 30px;">📭 No marks recorded yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Attendance Section -->
+    <div class="card">
+      <h3 style="font-size: 1.5em; color: #333; margin-bottom: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">📍 Your Attendance</h3>
+      {% if attendance %}
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Classes Attended</th>
+                <th>Total Classes</th>
+                <th>Attendance %</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for a in attendance %}
+              {% set percentage = (a.attended / a.total * 100) if a.total else 0 %}
+              {% set status_class = 'success' if percentage >= 75 else 'warning' if percentage >= 60 else 'danger' %}
+              <tr>
+                <td style="font-weight: 500;">{{ a.subject.name }}</td>
+                <td>{{ a.attended }}</td>
+                <td>{{ a.total }}</td>
+                <td style="font-weight: bold; color: {% if percentage >= 75 %}#28a745{% elif percentage >= 60 %}#ffc107{% else %}#dc3545{% endif %};">
+                  {% if a.total %}{{ '%.1f'|format(percentage) }}%{% else %}-{% endif %}
+                </td>
+                <td>
+                  {% if a.total %}
+                    {% if percentage >= 75 %}
+                      <span style="background-color: #d4edda; color: #155724; padding: 4px 8px; border-radius: 3px; font-size: 0.85em;">✅ Good</span>
+                    {% elif percentage >= 60 %}
+                      <span style="background-color: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 3px; font-size: 0.85em;">⚠️ Warning</span>
+                    {% else %}
+                      <span style="background-color: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 3px; font-size: 0.85em;">❌ Low</span>
+                    {% endif %}
+                  {% else %}
+                    <span>-</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+          <p style="color: #666; font-size: 0.9em;">ℹ️ <strong>Note:</strong> 75% attendance is required to be eligible for examinations. Below 60% attendance may result in restrictions.</p>
+        </div>
+      {% else %}
+        <p style="text-align: center; color: #999; padding: 30px;">📭 No attendance records yet.</p>
+      {% endif %}
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="{{ url_for('dashboard') }}" class="btn" style="text-decoration: none;">← Back to Dashboard</a>
+    </div>
   {% endif %}
 </div>
+
+<style>
+  .records-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  @media (max-width: 768px) {
+    table {
+      font-size: 0.9em;
+    }
+
+    table th, table td {
+      padding: 8px !important;
+    }
+  }
+</style>
 {% endblock %}

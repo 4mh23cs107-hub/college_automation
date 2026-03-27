@@ -1,20 +1,53 @@
 {% extends 'base.html' %}
 {% block title %}Add Student{% endblock %}
 {% block content %}
-<div class="card">
-  <h1>Add Student</h1>
-  <form method="post">
-    <label class="label">USN</label>
-    <input name="usn" required />
-    <label class="label">Name</label>
-    <input name="name" required />
-    <label class="label">Dept</label>
-    <input name="dept" />
-    <label class="label">Semester</label>
-    <input name="semester" type="number" min="1" max="8" />
-    <div style="margin-top:12px">
-      <button class="btn" type="submit">Add</button>
-    </div>
-  </form>
+<div style="max-width: 600px; margin: 0 auto;">
+  <div class="card">
+    <h1 style="font-size: 2em; color: #333; margin-bottom: 30px;">➕ Add New Student</h1>
+    
+    <form method="post">
+      <div class="form-group">
+        <label>Student USN (Unique Student Number)</label>
+        <input type="text" name="usn" placeholder="e.g., 1PV16CS001" required />
+      </div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="name" placeholder="Enter student's full name" required />
+      </div>
+
+      <div class="form-group">
+        <label>Department</label>
+        <select name="dept">
+          <option value="">-- Select Department --</option>
+          <option value="CSE">Computer Science & Engineering</option>
+          <option value="ECE">Electronics & Communication</option>
+          <option value="ME">Mechanical Engineering</option>
+          <option value="EE">Electrical Engineering</option>
+          <option value="CIVIL">Civil Engineering</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Semester</label>
+        <select name="semester">
+          <option value="">-- Select Semester --</option>
+          <option value="1">1st Semester</option>
+          <option value="2">2nd Semester</option>
+          <option value="3">3rd Semester</option>
+          <option value="4">4th Semester</option>
+          <option value="5">5th Semester</option>
+          <option value="6">6th Semester</option>
+          <option value="7">7th Semester</option>
+          <option value="8">8th Semester</option>
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 30px;">
+        <button type="submit" style="flex: 1; padding: 12px;">✅ Add Student</button>
+        <a href="{{ url_for('admin_students') }}" style="flex: 1; padding: 12px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px; text-align: center; cursor: pointer; border: none;">❌ Cancel</a>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
