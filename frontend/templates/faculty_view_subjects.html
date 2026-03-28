@@ -7,7 +7,7 @@
     <p style="color: #e0e0e0;">View subjects you are assigned to teach</p>
   </div>
 
-  <a href="{{ url_for('faculty_dashboard') }}" class="btn btn-back">← Back to Dashboard</a>
+  <a href="/dashboard" class="btn btn-back">← Back to Dashboard</a>
 
   {% if messages %}
     {% for message in messages %}
@@ -38,8 +38,8 @@
           </div>
 
           <div class="subject-actions">
-            <a href="{{ url_for('faculty_view_marks') }}" class="btn btn-action">Enter Marks</a>
-            <a href="{{ url_for('faculty_view_attendance') }}" class="btn btn-action-secondary">Mark Attendance</a>
+            <a href="/faculty/marks" class="btn btn-action">Enter Marks</a>
+            <a href="/faculty/attendance" class="btn btn-action-secondary">Mark Attendance</a>
           </div>
         </div>
       {% endfor %}

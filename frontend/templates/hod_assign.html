@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block title %}Faculty & Subject Management{% endblock %}
+{% block content %}
+<div style="max-width: 1100px; margin: 0 auto;">
+  <h1 style="font-size: 2em; color: #fff; margin-bottom: 10px; text-shadow: 0 0 10px rgba(102,126,234,0.3);">👨‍💼 Faculty & Subject Management</h1>
+  <p style="color: #b0b8d0; margin-bottom: 30px;">Add subjects, assign faculty, and manage assignments</p>
+
+  <!-- ===== Department Filter Bar ===== -->
+  <div class="card" style="margin-bottom: 25px; padding: 15px 22px;">
+    <form method="get" action="/hod/assign" style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+      <label style="font-weight: 600; margin: 0; color: #333;">🏢 Filter by Department:</label>
+      <select name="dept" style="max-width: 250px;" onchange="this.form.submit()">
+        <option value="">All Departments</option>
+        {% for d in departments %}
+        <option value="{{ d }}" {% if selected_dept == d %}selected{% endif %}>{{ d }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" style="padding: 8px 16px;">Apply</button>
+      {% if selected_dept %}
+      <a href="/hod/assign" style="color: #667eea; text-decoration: none; font-size: 0.9em;">✕ Clear filter</a>
+      {% endif %}
+    </form>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px;">
+
+    <!-- ===== 1. Add New Subject ===== -->
+    <div class="card">
+      <h2 style="font-size: 1.3em; color: #667eea; margin-bottom: 20px;">📚 Add New Subject</h2>
+      <form method="post" action="/hod/subjects/add">
+        <div class="form-group">
+          <label>Subject Code</label>
+          <input type="text" name="code" placeholder="e.g. CS201" required />
+        </div>
+
+        <div class="form-group">
+          <label>Subject Name</label>
+          <input type="text" name="name" placeholder="e.g. Software Engineering" required />
+        </div>
+
+        <div class="form-group">
+          <label>Department</label>
+          <select name="dept">
+            <option value="">-- Select Department --</option>
+            <option value="CSE">CSE</option>
+            <option value="ISE">ISE</option>
+            <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
+            <option value="ME">ME</option>
+            <option value="CE">CE</option>
+            <option value="AI&ML">AI&ML</option>
+            <option value="DS">DS</option>
+            {% for d in departments %}
+              {% if d not in ['CSE','ISE','ECE','EEE','ME','CE','AI&ML','DS'] %}
+              <option value="{{ d }}">{{ d }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Semester</label>
+          <select name="semester">
+            <option value="">-- Select Semester --</option>
+            {% for s in range(1, 9) %}
+            <option value="{{ s }}">Semester {{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 12px;">➕ Add Subject</button>
+      </form>
+    </div>
+
+    <!-- ===== 2. Assign Faculty to Subject ===== -->
+    <div class="card">
+      <h2 style="font-size: 1.3em; color: #667eea; margin-bottom: 20px;">🔗 Assign Faculty to Subject</h2>
+      <form method="post" action="/hod/assign">
+        <div class="form-group">
+          <label>Select Faculty</label>
+          <select name="faculty" required>
+            <option value="">-- Choose Faculty --</option>
+            {% for f in faculties %}
+            <option value="{{ f.id }}">👨‍🏫 {{ f.username }}{% if f.dept %} ({{ f.dept }}){% endif %}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Select Subject</label>
+          <select name="subject" required>
+            <option value="">-- Choose Subject --</option>
+            {% for s in subjects %}
+            <option value="{{ s.id }}">📚 {{ s.code }} — {{ s.name }}{% if s.semester %} (Sem {{ s.semester }}){% endif %}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 12px;">✅ Assign Faculty</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== 3. Current Assignments Table ===== -->
+  <div class="card" style="margin-top: 25px;">
+    <h2 style="font-size: 1.3em; color: #667eea; margin-bottom: 20px;">📋 Current Assignments</h2>
+    {% if assignments %}
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background: #f5f5f5;">
+            <th style="padding: 12px; text-align: left; color: #333; border-bottom: 2px solid #ddd;">Faculty</th>
+            <th style="padding: 12px; text-align: left; color: #333; border-bottom: 2px solid #ddd;">Subject Code</th>
+            <th style="padding: 12px; text-align: left; color: #333; border-bottom: 2px solid #ddd;">Subject Name</th>
+            <th style="padding: 12px; text-align: left; color: #333; border-bottom: 2px solid #ddd;">Dept</th>
+            <th style="padding: 12px; text-align: left; color: #333; border-bottom: 2px solid #ddd;">Sem</th>
+            <th style="padding: 12px; text-align: center; color: #333; border-bottom: 2px solid #ddd;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in assignments %}
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 10px 12px; color: #333;">👨‍🏫 {{ a.faculty.username }}</td>
+            <td style="padding: 10px 12px; color: #555;">{{ a.subject.code }}</td>
+            <td style="padding: 10px 12px; color: #555;">{{ a.subject.name }}</td>
+            <td style="padding: 10px 12px; color: #555;">{{ a.subject.dept or '—' }}</td>
+            <td style="padding: 10px 12px; color: #555;">{{ a.subject.semester or '—' }}</td>
+            <td style="padding: 10px 12px; text-align: center;">
+              <form method="post" action="/hod/assign/{{ a.id }}/delete" style="display:inline;" onsubmit="return confirm('Remove this assignment?')">
+                <button type="submit" style="background: #dc3545; padding: 6px 14px; font-size: 0.85em;">🗑 Remove</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p style="text-align: center; color: #999; padding: 30px;">No assignments yet. Use the form above to create your first assignment!</p>
+    {% endif %}
+  </div>
+
+  <div style="text-align: center; margin-top: 30px;">
+    <a href="/dashboard" style="color: #667eea; text-decoration: none;">← Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

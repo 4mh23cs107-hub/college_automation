@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% block title %}Faculty Listing{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1 style="color: #ffffff;">👥 Faculty Listing</h1>
+    <p style="color: #e0e0e0;">Manage and view faculty members</p>
+  </div>
+
+  <a href="/dashboard" class="btn btn-back">← Back to Dashboard</a>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.cat if message.cat else 'info' }}" role="alert">{{ message.msg }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="faculty-list">
+    {% if faculty_data %}
+      {% for fac_item in faculty_data %}
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <h2 style="color: #1a1a2e;">{{ fac_item.user.username }}</h2>
+            <span class="badge badge-info">{{ fac_item.num_subjects }} Subjects</span>
+            {% if fac_item.department %}
+              <span class="badge badge-primary">{{ fac_item.department }}</span>
+            {% endif %}
+          </div>
+          
+          <div class="faculty-info">
+            <p><strong style="color: #333;">Department:</strong> <span style="color: #666;">{{ fac_item.department or 'Not Assigned' }}</span></p>
+          </div>
+
+          {% if fac_item.assignments %}
+            <div class="assignments-section">
+              <h3 style="color: #1a1a2e;">Assigned Subjects:</h3>
+              <table class="table">
+                <thead>
+                  <tr style="background: #f5f5f5; color: #1a1a2e;">
+                    <th style="color: #1a1a2e;">Subject Code</th>
+                    <th style="color: #1a1a2e;">Subject Name</th>
+                    <th style="color: #1a1a2e;">Semester</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for assignment in fac_item.assignments %}
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                      <td style="color: #666;">{{ assignment.subject.code }}</td>
+                      <td style="color: #666;">{{ assignment.subject.name }}</td>
+                      <td style="color: #666;">{{ assignment.subject.semester }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p style="color: #ff6b6b; margin-top: 10px;">No subjects assigned</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="alert alert-info" style="color: #0066cc;">
+        No faculty members found in the system for your department.
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5em;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.page-header p {
+  color: #e0e0e0;
+}
+
+.btn-back {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #6c757d;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+}
+
+.alert {
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.alert-info {
+  background-color: #e7f3ff;
+  color: #0066cc;
+  border-left: 4px solid #0066cc;
+}
+
+.faculty-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.faculty-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+.faculty-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.faculty-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.faculty-header h2 {
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+.badge-info {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.faculty-info {
+  margin-bottom: 15px;
+}
+
+.faculty-info p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.assignments-section {
+  margin-top: 15px;
+}
+
+.assignments-section h3 {
+  color: #1a1a2e;
+  margin-bottom: 10px;
+  margin-top: 15px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fafafa;
+  border-radius: 5px;
+}
+
+.table thead {
+  background-color: #f5f5f5;
+}
+
+.table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  color: #1a1a2e;
+  border-bottom: 2px solid #ddd;
+}
+
+.table td {
+  padding: 10px 12px;
+  color: #666;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+</style>
+{% endblock %}

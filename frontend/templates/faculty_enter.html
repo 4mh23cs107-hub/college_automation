@@ -16,8 +16,8 @@
   {% if view_type != 'marks' and view_type != 'attendance' %}
     <!-- View Toggle Buttons -->
     <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 30px;">
-      <a href="{{ url_for('faculty_view_marks') }}" class="view-btn" style="background-color: #0066cc; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; cursor: pointer;">📝 Marks Only</a>
-      <a href="{{ url_for('faculty_view_attendance') }}" class="view-btn" style="background-color: #6c757d; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; cursor: pointer;">📍 Attendance Only</a>
+      <a href="/faculty/marks" class="view-btn" style="background-color: #0066cc; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; cursor: pointer;">📝 Marks Only</a>
+      <a href="/faculty/attendance" class="view-btn" style="background-color: #6c757d; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; cursor: pointer;">📍 Attendance Only</a>
     </div>
   {% endif %}
 
@@ -185,7 +185,7 @@
   {% endif %}
 
   <div style="text-align: center; margin-top: 30px;">
-    <a href="{{ url_for('faculty_dashboard') }}" style="color: #0066cc; text-decoration: none; font-weight: 600;">← Back to Dashboard</a>
+    <a href="/dashboard" style="color: #0066cc; text-decoration: none; font-weight: 600;">← Back to Dashboard</a>
   </div>
 </div>
 

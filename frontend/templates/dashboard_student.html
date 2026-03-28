@@ -14,7 +14,7 @@
       <h2 style="color: #1a1a2e;">Attendance Status</h2>
       <p style="color: #666;">View your attendance percentage and subject-wise attendance records.</p>
       <div class="card-actions">
-        <a href="{{ url_for('student_view') }}" class="btn btn-primary">View Attendance</a>
+        <a href="/student/view?type=attendance" class="btn btn-primary">View Attendance</a>
       </div>
     </div>
 
@@ -24,7 +24,7 @@
       <h2 style="color: #1a1a2e;">Marks & Results</h2>
       <p style="color: #666;">Check your internal marks, external exams, and overall performance.</p>
       <div class="card-actions">
-        <a href="{{ url_for('student_view') }}" class="btn btn-primary">View Marks</a>
+        <a href="/student/view?type=marks" class="btn btn-primary">View Marks</a>
       </div>
     </div>
 
@@ -34,7 +34,7 @@
       <h2 style="color: #1a1a2e;">SGPA & CGPA</h2>
       <p style="color: #666;">Track your Semester GPA and Cumulative GPA throughout your academic career.</p>
       <div class="card-actions">
-        <a href="{{ url_for('student_view') }}" class="btn btn-primary">View Results</a>
+        <a href="/student/view?type=sgpa" class="btn btn-primary">View Results</a>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
       <h2 style="color: #1a1a2e;">Your Marks Card</h2>
       <p style="color: #666;">View your official marks card uploaded by the admin.</p>
       <div class="card-actions">
-        <a href="{{ url_for('student_view_marks_card') }}" class="btn btn-primary">View Marks Card</a>
+        <a href="/student/marks-card" class="btn btn-primary">View Marks Card</a>
       </div>
     </div>
   </div>

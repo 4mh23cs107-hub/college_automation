@@ -21,17 +21,18 @@
     </div>
 
     <!-- Marks Section -->
+    {% if view_type != 'attendance' and view_type != 'sgpa' %}
     <div class="card" style="margin-bottom: 30px;">
       <h3 style="font-size: 1.5em; color: #333; margin-bottom: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">📊 Your Marks</h3>
       {% if marks %}
         <div class="table-responsive">
           <table>
             <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Internal</th>
-                <th>External</th>
-                <th>Total</th>
+              <tr style="background: #f0f0f0; border-bottom: 2px solid #667eea;">
+                <th style="color: #000000; font-weight: bold;">Subject</th>
+                <th style="color: #000000; font-weight: bold;">Internal</th>
+                <th style="color: #000000; font-weight: bold;">External</th>
+                <th style="color: #000000; font-weight: bold;">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -50,20 +51,22 @@
         <p style="text-align: center; color: #999; padding: 30px;">📭 No marks recorded yet.</p>
       {% endif %}
     </div>
+    {% endif %}
 
     <!-- Attendance Section -->
+    {% if view_type != 'marks' and view_type != 'sgpa' %}
     <div class="card">
       <h3 style="font-size: 1.5em; color: #333; margin-bottom: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">📍 Your Attendance</h3>
       {% if attendance %}
         <div class="table-responsive">
           <table>
             <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Classes Attended</th>
-                <th>Total Classes</th>
-                <th>Attendance %</th>
-                <th>Status</th>
+              <tr style="background: #f0f0f0; border-bottom: 2px solid #667eea;">
+                <th style="color: #000000; font-weight: bold;">Subject</th>
+                <th style="color: #000000; font-weight: bold;">Classes Attended</th>
+                <th style="color: #000000; font-weight: bold;">Total Classes</th>
+                <th style="color: #000000; font-weight: bold;">Attendance %</th>
+                <th style="color: #000000; font-weight: bold;">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -102,9 +105,62 @@
         <p style="text-align: center; color: #999; padding: 30px;">📭 No attendance records yet.</p>
       {% endif %}
     </div>
+    {% endif %}
+
+    <!-- SGPA/CGPA Section -->
+    {% if view_type == 'sgpa' %}
+    <div class="card" style="margin-bottom: 30px;">
+      <h3 style="font-size: 1.5em; color: #333; margin-bottom: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">🏆 Your Academic Performance</h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+        <!-- SGPA Card -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px; text-align: center;">
+          <p style="font-size: 0.9em; margin-bottom: 10px; opacity: 0.9;">Semester GPA (SGPA)</p>
+          <h2 style="font-size: 2.5em; margin: 0; font-weight: bold;">{{ '%.2f'|format(sgpa) }}<span style="font-size: 0.6em; margin-left: 5px;"> / 10</span></h2>
+          <p style="margin-top: 15px; opacity: 0.9; font-size: 0.9em;">Current Semester: Sem {{ student.semester }}</p>
+        </div>
+        
+        <!-- Performance Status -->
+        <div style="background: #f8f9fa; padding: 30px; border-radius: 10px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+          <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">Status</p>
+          <div style="font-size: 3em; margin: 10px 0;">
+            {% if sgpa >= 8.5 %}
+              ⭐ Excellent
+            {% elif sgpa >= 7.5 %}
+              ☆⭐ Very Good
+            {% elif sgpa >= 6.5 %}
+              ☆ Good
+            {% elif sgpa >= 5.5 %}
+              📊 Average
+            {% else %}
+              ⚠️ Needs Improvement
+            {% endif %}
+          </div>
+          {% if sgpa >= 8.5 %}
+            <p style="color: #28a745; margin-top: 10px;">Excellent performance! Keep it up!</p>
+          {% elif sgpa >= 7.5 %}
+            <p style="color: #00796b; margin-top: 10px;">Great work! You're doing well.</p>
+          {% elif sgpa >= 6.5 %}
+            <p style="color: #0066cc; margin-top: 10px;">Satisfactory performance.</p>
+          {% elif sgpa >= 5.5 %}
+            <p style="color: #ffc107; margin-top: 10px;">Average performance. Aim for improvement.</p>
+          {% else %}
+            <p style="color: #dc3545; margin-top: 10px;">Focus on improving your grades.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
+        <p style="color: #856404; margin: 0; font-size: 0.9em;">
+          ℹ️ <strong>Note:</strong> SGPA is calculated on a 10-point scale for your current semester (Semester {{ student.semester }}). 
+          The minimum CGPA requirement for graduation is typically 5.0. Maintain consistent performance to improve your academic standing.
+        </p>
+      </div>
+    </div>
+    {% endif %}
 
     <div style="text-align: center; margin-top: 30px;">
-      <a href="{{ url_for('dashboard') }}" class="btn" style="text-decoration: none;">← Back to Dashboard</a>
+      <a href="/dashboard" class="btn" style="text-decoration: none;">← Back to Dashboard</a>
     </div>
   {% endif %}
 </div>

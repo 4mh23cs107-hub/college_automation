@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{% block title %}College System{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+  <link rel="stylesheet" href="/static/css/styles.css">
   <style>
     * {
       margin: 0;
@@ -150,6 +150,7 @@
     input[type="text"],
     input[type="password"],
     input[type="email"],
+    input[type="number"],
     select,
     textarea {
       width: 100%;
@@ -159,6 +160,13 @@
       font-size: 1em;
       font-family: inherit;
       transition: border-color 0.3s;
+      color: #000;
+      background-color: #fff;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #6c757d;
     }
 
     input[type="text"]:focus,
@@ -240,14 +248,14 @@
 <body>
   <header class="site-header">
     <div class="container header-row">
-      <a href="{{ url_for('dashboard') if user else url_for('home') }}" class="brand">🎓 College System</a>
+      <a href="{% if user %}/dashboard{% else %}/{% endif %}" class="brand">🎓 College System</a>
       <nav>
         {% if user %}
           <span class="muted">{{ user.username }} ({{ user.role }})</span>
-          <a href="{{ url_for('logout') }}">Logout</a>
+          <a href="/logout">Logout</a>
         {% else %}
-          <a href="{{ url_for('login_get') }}">Login</a>
-          <a href="{{ url_for('signup_get') }}">Sign Up</a>
+          <a href="/login">Login</a>
+          <a href="/signup">Sign Up</a>
         {% endif %}
       </nav>
     </div>

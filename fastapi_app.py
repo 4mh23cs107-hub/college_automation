@@ -6,6 +6,7 @@ from fastapi import FastAPI, Request, Depends, Form, HTTPException, status, Uplo
 from fastapi.responses import RedirectResponse, HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from starlette.middleware.sessions import SessionMiddleware
 from sqlalchemy.orm import declarative_base, relationship, Session
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy import create_engine
@@ -30,7 +31,12 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv('SECRET_KEY', 'dev-se
 static_dir = os.path.join(os.path.dirname(__file__), 'static')
 app.mount('/static', StaticFiles(directory=static_dir), name='static')
 
-templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), 'templates'))
+# Templates from multiple possible locations for robustness
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+templates = Jinja2Templates(directory=[
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'frontend', 'templates')
+])
 
 # basic logger to record unhandled exceptions
 logger = logging.getLogger('fastapi_app')
@@ -336,12 +342,29 @@ def student_view(request: Request, db: Session = Depends(get_db)):
 
 
 @app.get('/hod/assign', response_class=HTMLResponse)
-def hod_assign(request: Request, db: Session = Depends(get_db)):
+def hod_assign(request: Request, dept: str = None, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['HOD'])
-    faculties = db.query(User).filter(User.role == 'Faculty').all()
-    subjects = db.query(Subject).all()
+    # Get distinct departments for the filter dropdown
+    all_depts = sorted(set(
+        d[0] for d in db.query(Subject.dept).distinct().all() if d[0]
+    ) | set(
+        d[0] for d in db.query(User.dept).filter(User.role == 'Faculty').distinct().all() if d[0]
+    ))
+    # Filter by department if provided
+    if dept:
+        faculties = db.query(User).filter(User.role == 'Faculty', User.dept == dept).all()
+        subjects = db.query(Subject).filter(Subject.dept == dept).all()
+    else:
+        faculties = db.query(User).filter(User.role == 'Faculty').all()
+        subjects = db.query(Subject).all()
     assignments = db.query(FacultyAssignment).all()
-    ctx = {'request': request, 'user': user, 'faculties': faculties, 'subjects': subjects, 'assignments': assignments, 'messages': consume_flash(request)}
+    ctx = {
+        'request': request, 'user': user,
+        'faculties': faculties, 'subjects': subjects,
+        'assignments': assignments, 'departments': all_depts,
+        'selected_dept': dept or '',
+        'messages': consume_flash(request),
+    }
     return render_template_safe('hod_assign.html', request, ctx)
 
 
@@ -356,6 +379,41 @@ def hod_assign_post(request: Request, faculty: int = Form(...), subject: int = F
         db.add(fa)
         db.commit()
         flash(request, 'Assigned successfully', 'success')
+    return RedirectResponse('/hod/assign', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post('/hod/subjects/add')
+async def hod_add_subject(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    form = await request.form()
+    code = form.get('code', '').strip()
+    name = form.get('name', '').strip()
+    dept = form.get('dept', '').strip() or None
+    sem_str = form.get('semester', '').strip()
+    semester = int(sem_str) if sem_str else None
+    if not code or not name:
+        flash(request, 'Subject code and name are required', 'danger')
+        return RedirectResponse('/hod/assign', status_code=status.HTTP_303_SEE_OTHER)
+    if db.query(Subject).filter(Subject.code == code).first():
+        flash(request, f'Subject with code "{code}" already exists', 'warning')
+    else:
+        sub = Subject(code=code, name=name, dept=dept, semester=semester)
+        db.add(sub)
+        db.commit()
+        flash(request, f'Subject "{name}" ({code}) added successfully', 'success')
+    return RedirectResponse('/hod/assign', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post('/hod/assign/{aid}/delete')
+def hod_delete_assignment(request: Request, aid: int, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    assignment = db.query(FacultyAssignment).filter(FacultyAssignment.id == aid).first()
+    if assignment:
+        db.delete(assignment)
+        db.commit()
+        flash(request, 'Assignment removed successfully', 'success')
+    else:
+        flash(request, 'Assignment not found', 'warning')
     return RedirectResponse('/hod/assign', status_code=status.HTTP_303_SEE_OTHER)
 
 

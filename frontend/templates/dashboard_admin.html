@@ -14,8 +14,8 @@
       <h2 style="color: #1a1a2e;">Student Management</h2>
       <p style="color: #666;">Add, edit, or manage student records and enrollment information.</p>
       <div class="card-actions">
-        <a href="{{ url_for('admin_students') }}" class="btn btn-primary">View Students</a>
-        <a href="{{ url_for('admin_add_student') }}" class="btn btn-success">+ Add Student</a>
+        <a href="/admin/students" class="btn btn-primary">View Students</a>
+        <a href="/admin/students/add" class="btn btn-success">+ Add Student</a>
       </div>
     </div>
 
@@ -25,7 +25,7 @@
       <h2 style="color: #1a1a2e;">Results & Marks</h2>
       <p style="color: #666;">View and manage final results, SGPA, and upload marks cards.</p>
       <div class="card-actions">
-        <a href="{{ url_for('admin_marks_cards') }}" class="btn btn-primary">Manage Marks Cards</a>
+        <a href="/admin/marks-cards" class="btn btn-primary">Manage Marks Cards</a>
         <a href="#" class="btn btn-secondary" style="opacity: 0.6;">Calculate SGPA</a>
       </div>
     </div>

@@ -14,7 +14,7 @@
       <h2 style="color: #1a1a2e;">Assign Faculty to Subjects</h2>
       <p style="color: #666666;">Manage faculty assignments and allocate subjects for the semester.</p>
       <div class="card-actions">
-        <a href="{{ url_for('hod_assign') }}" class="btn btn-primary">Go to Assignments</a>
+        <a href="/hod/assign" class="btn btn-primary">Go to Assignments</a>
       </div>
     </div>
 
@@ -24,7 +24,17 @@
       <h2 style="color: #1a1a2e;">Faculty Management</h2>
       <p style="color: #666666;">View and manage faculty details and workload allocation.</p>
       <div class="card-actions">
-        <a href="{{ url_for('hod_view_faculty') }}" class="btn btn-primary">View Faculty</a>
+        <a href="/hod/faculty" class="btn btn-primary">View Faculty</a>
+      </div>
+    </div>
+
+    <!-- Manage Subjects Card -->
+    <div class="dashboard-card">
+      <div class="card-icon">📚</div>
+      <h2 style="color: #1a1a2e;">Manage Subjects</h2>
+      <p style="color: #666666;">Add new subjects, assign faculty, and manage department-wise assignments.</p>
+      <div class="card-actions">
+        <a href="/hod/assign" class="btn btn-primary">Manage Subjects</a>
       </div>
     </div>
 
@@ -34,7 +44,7 @@
       <h2 style="color: #1a1a2e;">Student Records</h2>
       <p style="color: #666666;">Monitor student data, enrollment, and academic progress.</p>
       <div class="card-actions">
-        <a href="{{ url_for('hod_view_students') }}" class="btn btn-primary">View Students</a>
+        <a href="/hod/students" class="btn btn-primary">View Students</a>
       </div>
     </div>
   </div>
