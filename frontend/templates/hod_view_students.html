@@ -38,8 +38,8 @@
         <label style="color: #333; font-weight: 600;">Department</label>
         <select name="dept" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;">
           <option value="">-- Dept --</option>
-          <option value="CSE" {% if user.dept == 'CSE' %}selected{% endif %}>CSE</option>
-          <option value="ISE" {% if user.dept == 'ISE' %}selected{% endif %}>ISE</option>
+          <option value="CSE" {% if user.hod_profile and user.hod_profile.dept == 'CSE' %}selected{% endif %}>CSE</option>
+          <option value="ISE" {% if user.hod_profile and user.hod_profile.dept == 'ISE' %}selected{% endif %}>ISE</option>
           <option value="ECE">ECE</option>
           <option value="EEE">EEE</option>
           <option value="AI&ML">AI&ML</option>
