@@ -23,31 +23,10 @@
     <div class="dashboard-card">
       <div class="card-icon">📈</div>
       <h2 style="color: #1a1a2e;">Results & Marks</h2>
-      <p style="color: #666;">View and manage final results, SGPA, and CGPA calculations.</p>
+      <p style="color: #666;">View and manage final results, SGPA, and upload marks cards.</p>
       <div class="card-actions">
-        <a href="#" class="btn btn-primary" style="opacity: 0.6;">View Results</a>
+        <a href="{{ url_for('admin_marks_cards') }}" class="btn btn-primary">Manage Marks Cards</a>
         <a href="#" class="btn btn-secondary" style="opacity: 0.6;">Calculate SGPA</a>
-      </div>
-    </div>
-
-    <!-- Subject Management Card -->
-    <div class="dashboard-card">
-      <div class="card-icon">📚</div>
-      <h2 style="color: #1a1a2e;">Subject Management</h2>
-      <p style="color: #666;">Create and manage academic subjects and course offerings.</p>
-      <div class="card-actions">
-        <a href="#" class="btn btn-primary" style="opacity: 0.6;">View Subjects</a>
-        <a href="#" class="btn btn-success" style="opacity: 0.6;">+ Add Subject</a>
-      </div>
-    </div>
-
-    <!-- Reports Card -->
-    <div class="dashboard-card">
-      <div class="card-icon">📋</div>
-      <h2 style="color: #1a1a2e;">Reports</h2>
-      <p style="color: #666;">Generate PDF/Excel reports for academic records.</p>
-      <div class="card-actions">
-        <a href="#" class="btn btn-primary" style="opacity: 0.6;">Generate Report</a>
       </div>
     </div>
   </div>

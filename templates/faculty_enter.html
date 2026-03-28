@@ -34,7 +34,7 @@
                 <select name="subject" required style="color: #1a1a2e;">
                   <option value="">-- Select Subject --</option>
                   {% for s in subjects %}
-                  <option value="{{ s.id }}">{{ s.subject_code }} — {{ s.subject_name }}</option>
+                  <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -83,7 +83,7 @@
                     {% for m in marks %}
                     <tr style="border-bottom: 1px solid #e0e0e0;">
                       <td style="color: #666;">{{ m.student.usn }}</td>
-                      <td style="color: #666;">{{ m.subject.subject_code }}</td>
+                      <td style="color: #666;">{{ m.subject.code }}</td>
                       <td style="color: #666;">{{ m.internal or '-' }}</td>
                       <td style="color: #666;">{{ m.external or '-' }}</td>
                       <td style="font-weight: bold; color: #0066cc;">{{ (m.internal or 0) + (m.external or 0) }}</td>
@@ -114,7 +114,7 @@
                 <select name="subject" required style="color: #1a1a2e;">
                   <option value="">-- Select Subject --</option>
                   {% for s in subjects %}
-                  <option value="{{ s.id }}">{{ s.subject_code }} — {{ s.subject_name }}</option>
+                  <option value="{{ s.id }}">{{ s.code }} — {{ s.name }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -164,7 +164,7 @@
                     {% set percentage = '%.1f' % ((a.attended / a.total * 100) if a.total else 0) %}
                     <tr style="border-bottom: 1px solid #e0e0e0;">
                       <td style="color: #666;">{{ a.student.usn }}</td>
-                      <td style="color: #666;">{{ a.subject.subject_code }}</td>
+                      <td style="color: #666;">{{ a.subject.code }}</td>
                       <td style="color: #666;">{{ a.attended }}</td>
                       <td style="color: #666;">{{ a.total }}</td>
                       <td style="font-weight: bold; color: {% if percentage|float >= 75 %}#28a745{% elif percentage|float >= 60 %}#ffc107{% else %}#dc3545{% endif %};">

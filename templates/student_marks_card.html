@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}My Marks Card{% endblock %}
+{% block content %}
+<div class="records-container">
+  {% if not student %}
+    <div class="card" style="text-align: center; padding: 40px;">
+      <p style="color: #999; font-size: 1.1em;">❌ No student record found for your account.</p>
+      <p style="color: #999; margin-top: 10px;">Please contact your administrator.</p>
+    </div>
+  {% else %}
+    <!-- Student Info Card -->
+    <div class="card" style="margin-bottom: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h2 style="font-size: 1.8em; margin-bottom: 10px;">{{ student.name }}</h2>
+          <p style="margin: 5px 0;">📚 USN: <strong>{{ student.usn }}</strong></p>
+          <p style="margin: 5px 0;">🏢 Department: <strong>{{ student.dept or 'N/A' }}</strong></p>
+          <p style="margin: 5px 0;">📅 Semester: <strong>{{ student.semester or 'N/A' }}</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marks Card Section -->
+    <div class="card" style="margin-bottom: 30px;">
+      <h3 style="font-size: 1.5em; color: #333; margin-bottom: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">📄 Your Marks Card</h3>
+      
+      {% if marks_card %}
+        <div style="padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center;">
+          <p style="color: #666; margin-bottom: 15px; font-size: 1.1em;">✅ Your marks card has been uploaded by the admin.</p>
+          <p style="color: #999; margin-bottom: 15px; font-size: 0.9em;">
+            📅 Uploaded on: <strong>{{ marks_card.upload_date or 'Date not available' }}</strong>
+          </p>
+          
+          <a href="{{ url_for('download_marks_card', card_id=marks_card.id) }}" class="btn btn-primary" style="display: inline-block; padding: 12px 25px; background-color: #0066cc; color: white; text-decoration: none; border-radius: 5px; font-size: 1em; transition: all 0.3s;">
+            📥 Download Your Marks Card
+          </a>
+          
+          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+            <p style="color: #666; font-size: 0.9em;">
+              ℹ️ <strong>Note:</strong> Save a copy of your marks card for your records. This card contains your official academic marks and performance details.
+            </p>
+          </div>
+        </div>
+      {% else %}
+        <div style="padding: 30px; background: #fff3cd; border-radius: 8px; text-align: center; border: 1px solid #ffc107;">
+          <p style="color: #856404; font-size: 1.1em; margin: 0;">
+            ⚠️ Your marks card has not been uploaded yet.
+          </p>
+          <p style="color: #856404; margin-top: 10px; font-size: 0.95em;">
+            Please contact your administrator to request your marks card.
+          </p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Back to Dashboard Link -->
+    <div style="margin-top: 20px;">
+      <a href="{{ url_for('student_view') }}" class="btn btn-back" style="display: inline-block; padding: 10px 15px; background-color: #0066cc; color: white; text-decoration: none; border-radius: 5px;">← Back to Academic Records</a>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.records-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn-back {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+}
+
+.btn-primary {
+  background-color: #0066cc;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0052a3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+</style>
+{% endblock %}

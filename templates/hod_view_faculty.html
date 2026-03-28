@@ -11,7 +11,7 @@
 
   {% if messages %}
     {% for message in messages %}
-      <div class="alert alert-{{ message.category }}" role="alert">{{ message.text }}</div>
+      <div class="alert alert-{{ message.cat if message.cat else 'info' }}" role="alert">{{ message.msg }}</div>
     {% endfor %}
   {% endif %}
 
@@ -22,10 +22,13 @@
           <div class="faculty-header">
             <h2 style="color: #1a1a2e;">{{ fac_item.user.username }}</h2>
             <span class="badge badge-info">{{ fac_item.num_subjects }} Subjects</span>
+            {% if fac_item.department %}
+              <span class="badge badge-primary">{{ fac_item.department }}</span>
+            {% endif %}
           </div>
           
           <div class="faculty-info">
-            <p><strong style="color: #333;">Email:</strong> <span style="color: #666;">{{ fac_item.user.email }}</span></p>
+            <p><strong style="color: #333;">Department:</strong> <span style="color: #666;">{{ fac_item.department or 'Not Assigned' }}</span></p>
           </div>
 
           {% if fac_item.assignments %}
@@ -37,16 +40,14 @@
                     <th style="color: #1a1a2e;">Subject Code</th>
                     <th style="color: #1a1a2e;">Subject Name</th>
                     <th style="color: #1a1a2e;">Semester</th>
-                    <th style="color: #1a1a2e;">Section</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for assignment in fac_item.assignments %}
                     <tr style="border-bottom: 1px solid #e0e0e0;">
-                      <td style="color: #666;">{{ assignment.subject.subject_code }}</td>
-                      <td style="color: #666;">{{ assignment.subject.subject_name }}</td>
+                      <td style="color: #666;">{{ assignment.subject.code }}</td>
+                      <td style="color: #666;">{{ assignment.subject.name }}</td>
                       <td style="color: #666;">{{ assignment.subject.semester }}</td>
-                      <td style="color: #666;">{{ assignment.section }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -59,7 +60,7 @@
       {% endfor %}
     {% else %}
       <div class="alert alert-info" style="color: #0066cc;">
-        No faculty members found in the system.
+        No faculty members found in the system for your department.
       </div>
     {% endif %}
   </div>

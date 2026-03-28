@@ -11,46 +11,68 @@
 
   {% if messages %}
     {% for message in messages %}
-      <div class="alert alert-{{ message.category }}" role="alert">{{ message.text }}</div>
+      <div class="alert alert-{{ message.cat if message.cat else 'info' }}" role="alert">{{ message.msg }}</div>
     {% endfor %}
   {% endif %}
 
   <div class="student-table-container">
-    {% if students %}
+    {% if student_data %}
       <table class="student-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff;">
             <th style="color: #ffffff;">USN</th>
             <th style="color: #ffffff;">Name</th>
-            <th style="color: #ffffff;">Email</th>
             <th style="color: #ffffff;">Department</th>
             <th style="color: #ffffff;">Semester</th>
-            <th style="color: #ffffff;">Section</th>
+            <th style="color: #ffffff;">Avg Attendance</th>
+            <th style="color: #ffffff;">IA Marks</th>
           </tr>
         </thead>
         <tbody>
-          {% for student in students %}
+          {% for item in student_data %}
             <tr style="border-bottom: 1px solid #e0e0e0;">
-              <td style="color: #1a1a2e; font-weight: bold;">{{ student.usn }}</td>
-              <td style="color: #666;">{{ student.name }}</td>
-              <td style="color: #666;">{{ student.email }}</td>
-              <td style="color: #666;">{{ student.department }}</td>
-              <td style="color: #666;">{{ student.semester }}</td>
-              <td style="color: #666;">{{ student.section }}</td>
+              <td style="color: #1a1a2e; font-weight: bold;">{{ item.student.usn }}</td>
+              <td style="color: #666;">{{ item.student.name }}</td>
+              <td style="color: #666;">{{ item.student.dept or 'N/A' }}</td>
+              <td style="color: #666;">{{ item.student.semester or 'N/A' }}</td>
+              <td style="color: #666;">
+                {% if item.avg_attendance > 0 %}
+                  {% if item.avg_attendance >= 75 %}
+                    <span style="background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 3px;">{{ "%.1f"|format(item.avg_attendance) }}%</span>
+                  {% elif item.avg_attendance >= 60 %}
+                    <span style="background: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 3px;">{{ "%.1f"|format(item.avg_attendance) }}%</span>
+                  {% else %}
+                    <span style="background: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 3px;">{{ "%.1f"|format(item.avg_attendance) }}%</span>
+                  {% endif %}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td style="color: #666;">
+                {% if item.ia_marks %}
+                  <div style="font-size: 0.9em;">
+                    {% for mark in item.ia_marks %}
+                      <div>{{ mark.subject }}: <strong>{{ "%.1f"|format(mark.ia_marks) }}</strong></div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  No marks
+                {% endif %}
+              </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     {% else %}
       <div class="alert alert-info" style="color: #0066cc;">
-        No students found in the system.
+        No students found in your department.
       </div>
     {% endif %}
   </div>
 
   <div class="summary-section">
     <h3 style="color: #1a1a2e;">Summary</h3>
-    <p style="color: #666;">Total Students: <span style="color: #1a1a2e; font-weight: bold;">{{ students|length }}</span></p>
+    <p style="color: #666;">Total Students: <span style="color: #1a1a2e; font-weight: bold;">{{ student_data|length }}</span></p>
   </div>
 </div>
 

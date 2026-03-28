@@ -2,17 +2,16 @@ import os
 import logging
 import traceback
 from datetime import datetime
-from fastapi import FastAPI, Request, Depends, Form, HTTPException, status
-from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi import FastAPI, Request, Depends, Form, HTTPException, status, UploadFile, File
+from fastapi.responses import RedirectResponse, HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from starlette.middleware.sessions import SessionMiddleware
-from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import declarative_base, relationship, Session
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
+import shutil
 
 # Define the engine before usage
 DB_PATH = os.getenv('DATABASE_URL', f'sqlite:///{os.path.join(os.path.dirname(__file__), "college.db")}')
@@ -26,9 +25,12 @@ Base = declarative_base()
 
 app = FastAPI(title='College Automation FastAPI')
 app.add_middleware(SessionMiddleware, secret_key=os.getenv('SECRET_KEY', 'dev-secret'), session_cookie='session')
-app.mount('/static', StaticFiles(directory='static'), name='static')
 
-templates = Jinja2Templates(directory='templates')
+# Mount static files with absolute path
+static_dir = os.path.join(os.path.dirname(__file__), 'static')
+app.mount('/static', StaticFiles(directory=static_dir), name='static')
+
+templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), 'templates'))
 
 # basic logger to record unhandled exceptions
 logger = logging.getLogger('fastapi_app')
@@ -81,6 +83,7 @@ class User(Base):
     username = Column(String(150), unique=True, nullable=False)
     password_hash = Column(String(256), nullable=False)
     role = Column(String(20), nullable=False)
+    dept = Column(String(100), nullable=True)
 
     def set_password(self, password: str):
         self.password_hash = generate_password_hash(password)
@@ -136,6 +139,15 @@ class Marks(Base):
     external = Column(Float, nullable=True, default=0.0)
     student = relationship('Student', backref='marks')
     subject = relationship('Subject')
+
+
+class MarksCard(Base):
+    __tablename__ = 'marks_card'
+    id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey('student.id'), nullable=False)
+    file_path = Column(String(500), nullable=False)
+    upload_date = Column(String(50), nullable=True)
+    student = relationship('Student', backref='marks_cards')
 
 
 def init_db():
@@ -350,14 +362,20 @@ def hod_assign_post(request: Request, faculty: int = Form(...), subject: int = F
 @app.get('/hod/faculty', response_class=HTMLResponse)
 def hod_view_faculty(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['HOD'])
-    faculties = db.query(User).filter(User.role == 'Faculty').all()
+    # Filter faculties by department if HOD has a department assigned
+    if user.dept:
+        faculties = db.query(User).filter(User.role == 'Faculty', User.dept == user.dept).all()
+    else:
+        faculties = db.query(User).filter(User.role == 'Faculty').all()
+    
     faculty_data = []
     for fac in faculties:
         assignments = db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == fac.id).all()
         faculty_data.append({
             'user': fac,
             'assignments': assignments,
-            'num_subjects': len(assignments)
+            'num_subjects': len(assignments),
+            'department': fac.dept
         })
     ctx = {'request': request, 'user': user, 'faculty_data': faculty_data, 'messages': consume_flash(request)}
     return render_template_safe('hod_view_faculty.html', request, ctx)
@@ -366,8 +384,41 @@ def hod_view_faculty(request: Request, db: Session = Depends(get_db)):
 @app.get('/hod/students', response_class=HTMLResponse)
 def hod_view_students(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['HOD'])
-    students = db.query(Student).all()
-    ctx = {'request': request, 'user': user, 'students': students, 'messages': consume_flash(request)}
+    # Filter students by department if HOD has a department assigned
+    if user.dept:
+        students = db.query(Student).filter(Student.dept == user.dept).all()
+    else:
+        students = db.query(Student).all()
+    
+    # Enrich student data with attendance and marks information
+    student_data = []
+    for student in students:
+        attendance_records = db.query(Attendance).filter(Attendance.student_id == student.id).all()
+        marks_records = db.query(Marks).filter(Marks.student_id == student.id).all()
+        
+        # Calculate average attendance
+        avg_attendance = 0
+        if attendance_records:
+            total_percentage = sum([(a.attended / a.total * 100) if a.total else 0 for a in attendance_records])
+            avg_attendance = total_percentage / len(attendance_records)
+        
+        # Get IA marks from marks table (assuming internal is IA marks)
+        ia_marks = []
+        for mark in marks_records:
+            if mark.internal is not None:
+                ia_marks.append({
+                    'subject': mark.subject.name,
+                    'ia_marks': mark.internal
+                })
+        
+        student_data.append({
+            'student': student,
+            'avg_attendance': round(avg_attendance, 2),
+            'ia_marks': ia_marks,
+            'total_subjects': len(attendance_records)
+        })
+    
+    ctx = {'request': request, 'user': user, 'student_data': student_data, 'messages': consume_flash(request)}
     return render_template_safe('hod_view_students.html', request, ctx)
 
 
@@ -383,13 +434,15 @@ def faculty_view_subjects(request: Request, db: Session = Depends(get_db)):
 @app.get('/faculty/marks', response_class=HTMLResponse)
 def faculty_view_marks(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['Faculty'])
-    assigned = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    assigned_subjects = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    assigned_subject_ids = [s.id for s in assigned_subjects]
     students = db.query(Student).all()
-    marks = db.query(Marks).all()
+    # Only show marks for assigned subjects
+    marks = db.query(Marks).filter(Marks.subject_id.in_(assigned_subject_ids)).all() if assigned_subject_ids else []
     ctx = {
         'request': request,
         'user': user,
-        'subjects': assigned,
+        'subjects': assigned_subjects,
         'students': students,
         'marks': marks,
         'messages': consume_flash(request),
@@ -401,13 +454,15 @@ def faculty_view_marks(request: Request, db: Session = Depends(get_db)):
 @app.get('/faculty/attendance', response_class=HTMLResponse)
 def faculty_view_attendance(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['Faculty'])
-    assigned = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    assigned_subjects = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    assigned_subject_ids = [s.id for s in assigned_subjects]
     students = db.query(Student).all()
-    attendance = db.query(Attendance).all()
+    # Only show attendance for assigned subjects
+    attendance = db.query(Attendance).filter(Attendance.subject_id.in_(assigned_subject_ids)).all() if assigned_subject_ids else []
     ctx = {
         'request': request,
         'user': user,
-        'subjects': assigned,
+        'subjects': assigned_subjects,
         'students': students,
         'attendance': attendance,
         'messages': consume_flash(request),
@@ -482,6 +537,113 @@ def admin_delete_student(request: Request, sid: int, db: Session = Depends(get_d
     else:
         flash(request, 'Student not found', 'warning')
     return RedirectResponse('/admin/students', status_code=status.HTTP_303_SEE_OTHER)
+
+
+# Admin Marks Card Management Routes
+@app.get('/admin/marks-cards', response_class=HTMLResponse)
+def admin_marks_cards(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['Admin'])
+    students = db.query(Student).all()
+    marks_cards = db.query(MarksCard).all()
+    student_cards = {}
+    for card in marks_cards:
+        if card.student_id not in student_cards:
+            student_cards[card.student_id] = card
+    ctx = {'request': request, 'user': user, 'students': students, 'student_cards': student_cards, 'messages': consume_flash(request)}
+    return render_template_safe('admin_marks_cards.html', request, ctx)
+
+
+@app.post('/admin/marks-cards/upload/{sid}')
+async def admin_upload_marks_card(request: Request, sid: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['Admin'])
+    student = db.query(Student).get(sid)
+    if not student:
+        flash(request, 'Student not found', 'danger')
+        return RedirectResponse('/admin/marks-cards', status_code=status.HTTP_303_SEE_OTHER)
+    
+    # Create marks_cards directory if it doesn't exist
+    markers_dir = os.path.join('static', 'marks_cards')
+    os.makedirs(markers_dir, exist_ok=True)
+    
+    # Save the file with student USN as name
+    file_extension = os.path.splitext(file.filename)[1]
+    file_name = f"{student.usn}_markcard{file_extension}"
+    file_path = os.path.join(markers_dir, file_name)
+    
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Check if student already has a marks card
+        existing_card = db.query(MarksCard).filter(MarksCard.student_id == sid).first()
+        if existing_card:
+            # Delete old file if it exists
+            if os.path.exists(existing_card.file_path):
+                os.remove(existing_card.file_path)
+            existing_card.file_path = file_path
+            existing_card.upload_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            card = MarksCard(student_id=sid, file_path=file_path, upload_date=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            db.add(card)
+        
+        db.commit()
+        flash(request, f'Marks card uploaded successfully for {student.name}', 'success')
+    except Exception as e:
+        flash(request, f'Error uploading file: {str(e)}', 'danger')
+    
+    return RedirectResponse('/admin/marks-cards', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.get('/admin/marks-cards/delete/{card_id}')
+def admin_delete_marks_card(request: Request, card_id: int, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['Admin'])
+    card = db.query(MarksCard).get(card_id)
+    if card:
+        if os.path.exists(card.file_path):
+            os.remove(card.file_path)
+        db.delete(card)
+        db.commit()
+        flash(request, 'Marks card deleted', 'success')
+    else:
+        flash(request, 'Marks card not found', 'warning')
+    return RedirectResponse('/admin/marks-cards', status_code=status.HTTP_303_SEE_OTHER)
+
+
+# Download Marks Card Route
+@app.get('/student/marks-card/download/{card_id}')
+def download_marks_card(request: Request, card_id: int, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['Student'])
+    card = db.query(MarksCard).get(card_id)
+    if not card:
+        flash(request, 'Marks card not found', 'warning')
+        return RedirectResponse('/student/marks-card', status_code=status.HTTP_303_SEE_OTHER)
+    
+    # Verify the card belongs to the student
+    student = db.query(Student).filter(Student.usn == user.username).first()
+    if not student or card.student_id != student.id:
+        flash(request, 'You do not have permission to download this card', 'danger')
+        return RedirectResponse('/student/marks-card', status_code=status.HTTP_303_SEE_OTHER)
+    
+    if os.path.exists(card.file_path):
+        return FileResponse(card.file_path, filename=os.path.basename(card.file_path))
+    else:
+        flash(request, 'File not found on server', 'warning')
+        return RedirectResponse('/student/marks-card', status_code=status.HTTP_303_SEE_OTHER)
+
+
+# Student Marks Card View Route
+@app.get('/student/marks-card', response_class=HTMLResponse)
+def student_view_marks_card(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['Student'])
+    student = db.query(Student).filter(Student.usn == user.username).first()
+    if not student:
+        flash(request, 'Student record not found', 'warning')
+        ctx = {'request': request, 'user': user, 'marks_card': None, 'messages': consume_flash(request)}
+        return render_template_safe('student_marks_card.html', request, ctx)
+    
+    marks_card = db.query(MarksCard).filter(MarksCard.student_id == student.id).first()
+    ctx = {'request': request, 'user': user, 'student': student, 'marks_card': marks_card, 'messages': consume_flash(request)}
+    return render_template_safe('student_marks_card.html', request, ctx)
 
 
 @app.post('/signup')

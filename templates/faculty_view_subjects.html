@@ -20,24 +20,20 @@
       {% for subject in subjects %}
         <div class="subject-card">
           <div class="subject-header">
-            <div class="subject-code" style="color: #0066cc; font-weight: bold;">{{ subject.subject_code }}</div>
+            <div class="subject-code" style="color: #0066cc; font-weight: bold;">{{ subject.code }}</div>
             <div class="semester-badge">SEM {{ subject.semester }}</div>
           </div>
           
-          <h2 style="color: #1a1a2e;">{{ subject.subject_name }}</h2>
+          <h2 style="color: #1a1a2e;">{{ subject.name }}</h2>
           
           <div class="subject-details">
             <div class="detail-row">
               <span class="label" style="color: #666;">Department:</span>
-              <span class="value" style="color: #1a1a2e;">{{ subject.department }}</span>
+              <span class="value" style="color: #1a1a2e;">{{ subject.dept or 'N/A' }}</span>
             </div>
             <div class="detail-row">
               <span class="label" style="color: #666;">Semester:</span>
-              <span class="value" style="color: #1a1a2e;">{{ subject.semester }}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label" style="color: #666;">Credits:</span>
-              <span class="value" style="color: #1a1a2e;">{{ subject.credits }}</span>
+              <span class="value" style="color: #1a1a2e;">{{ subject.semester or 'N/A' }}</span>
             </div>
           </div>
 

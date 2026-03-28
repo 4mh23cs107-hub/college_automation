@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block title %}Manage Marks Cards{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1 style="color: #ffffff;">📄 Manage Marks Cards</h1>
+    <p style="color: #e0e0e0;">Upload and manage student marks cards</p>
+  </div>
+
+  <a href="{{ url_for('dashboard') }}" class="btn btn-back">← Back to Dashboard</a>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.cat if message.cat else 'info' }}" role="alert">{{ message.msg }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="marks-cards-list" style="margin-top: 30px;">
+    {% if students %}
+      {% for student in students %}
+        <div class="card" style="margin-bottom: 20px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+          <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h3 style="margin: 0; color: white;">{{ student.name }}</h3>
+                <p style="margin: 5px 0; color: #e0e0e0;">USN: <strong>{{ student.usn }}</strong> | Department: <strong>{{ student.dept or 'N/A' }}</strong></p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-body" style="padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+              <div>
+                {% if student_cards.get(student.id) %}
+                  <p style="color: #666; margin: 0 0 10px 0;">
+                    <span style="color: #28a745; font-weight: bold;">✓ Card Uploaded</span>
+                    <br>
+                    <small style="color: #999;">Date: {{ student_cards[student.id].upload_date or 'N/A' }}</small>
+                  </p>
+                  <a href="{{ student_cards[student.id].file_path }}" class="btn btn-info" download style="display: inline-block; padding: 8px 15px; background-color: #17a2b8; color: white; border-radius: 5px; text-decoration: none; margin-right: 10px;">📥 Download</a>
+                  <form method="post" action="{{ url_for('admin_delete_marks_card', card_id=student_cards[student.id].id) }}" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger" style="padding: 8px 15px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="return confirm('Are you sure you want to delete this marks card?');">🗑️ Delete</button>
+                  </form>
+                {% else %}
+                  <p style="color: #999; margin: 0;">No marks card uploaded</p>
+                {% endif %}
+              </div>
+              
+              <div style="flex: 1; min-width: 300px;">
+                <form method="post" enctype="multipart/form-data" action="{{ url_for('admin_upload_marks_card', sid=student.id) }}" style="display: flex; gap: 10px; align-items: center;">
+                  <input type="file" name="file" required style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                  <button type="submit" class="btn btn-primary" style="padding: 8px 15px; background-color: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer; white-space: nowrap;">📤 Upload</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="alert alert-info" style="color: #0066cc; padding: 20px; border-radius: 8px; background-color: #e7f3ff;">
+        No students found in the system.
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5em;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.page-header p {
+  color: #e0e0e0;
+}
+
+.btn-back {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #6c757d;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+}
+
+.alert {
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.alert-info {
+  background-color: #e7f3ff;
+  color: #0066cc;
+  border: 1px solid #b3d7ff;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.card {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.marks-cards-list {
+  margin-top: 20px;
+}
+</style>
+{% endblock %}
