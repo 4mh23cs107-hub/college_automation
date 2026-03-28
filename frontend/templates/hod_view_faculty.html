@@ -9,6 +9,36 @@
 
   <a href="/dashboard" class="btn btn-back">← Back to Dashboard</a>
 
+  <!-- Add New Faculty Form -->
+  <div class="card" style="margin-bottom: 30px; padding: 25px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <h2 style="font-size: 1.5em; color: #667eea; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">➕ Add New Faculty</h2>
+    <form method="post" action="/hod/faculty/add" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
+      <div class="form-group" style="margin-bottom: 0;">
+        <label style="color: #333; font-weight: 600;">Username</label>
+        <input type="text" name="username" placeholder="e.g. fac2" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;" />
+      </div>
+      <div class="form-group" style="margin-bottom: 0;">
+        <label style="color: #333; font-weight: 600;">Password</label>
+        <input type="password" name="password" placeholder="••••••••" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;" />
+      </div>
+      <div class="form-group" style="margin-bottom: 0;">
+        <label style="color: #333; font-weight: 600;">Department</label>
+        <select name="dept" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;">
+          <option value="">-- Choose Dept --</option>
+          <option value="CSE" {% if user.dept == 'CSE' %}selected{% endif %}>CSE</option>
+          <option value="ISE" {% if user.dept == 'ISE' %}selected{% endif %}>ISE</option>
+          <option value="ECE">ECE</option>
+          <option value="EEE">EEE</option>
+          <option value="ME">ME</option>
+          <option value="CE">CE</option>
+          <option value="AI&ML">AI&ML</option>
+          <option value="DS">DS</option>
+        </select>
+      </div>
+      <button type="submit" style="padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Add Faculty</button>
+    </form>
+  </div>
+
   {% if messages %}
     {% for message in messages %}
       <div class="alert alert-{{ message.cat if message.cat else 'info' }}" role="alert">{{ message.msg }}</div>
@@ -20,11 +50,16 @@
       {% for fac_item in faculty_data %}
         <div class="faculty-card">
           <div class="faculty-header">
-            <h2 style="color: #1a1a2e;">{{ fac_item.user.username }}</h2>
-            <span class="badge badge-info">{{ fac_item.num_subjects }} Subjects</span>
-            {% if fac_item.department %}
-              <span class="badge badge-primary">{{ fac_item.department }}</span>
-            {% endif %}
+            <h2 style="color: #1a1a2e;">👨‍🏫 {{ fac_item.user.username }}</h2>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span class="badge badge-info">{{ fac_item.num_subjects }} Subjects</span>
+              {% if fac_item.department %}
+                <span class="badge badge-primary">{{ fac_item.department }}</span>
+              {% endif %}
+              <form method="post" action="/hod/faculty/{{ fac_item.user.id }}/delete" style="display: inline;" onsubmit="return confirm('Delete this faculty member? All their assignments will be lost.')">
+                <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: #dc3545;" title="Remove Faculty">🗑️</button>
+              </form>
+            </div>
           </div>
           
           <div class="faculty-info">

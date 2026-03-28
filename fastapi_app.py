@@ -27,16 +27,12 @@ Base = declarative_base()
 app = FastAPI(title='College Automation FastAPI')
 app.add_middleware(SessionMiddleware, secret_key=os.getenv('SECRET_KEY', 'dev-secret'), session_cookie='session')
 
-# Mount static files with absolute path
-static_dir = os.path.join(os.path.dirname(__file__), 'static')
+# Unified templates and static directories
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+static_dir = os.path.join(BASE_DIR, 'frontend', 'static')
 app.mount('/static', StaticFiles(directory=static_dir), name='static')
 
-# Templates from multiple possible locations for robustness
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-templates = Jinja2Templates(directory=[
-    os.path.join(BASE_DIR, 'templates'),
-    os.path.join(BASE_DIR, 'frontend', 'templates')
-])
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, 'frontend', 'templates'))
 
 # basic logger to record unhandled exceptions
 logger = logging.getLogger('fastapi_app')
@@ -439,6 +435,33 @@ def hod_view_faculty(request: Request, db: Session = Depends(get_db)):
     return render_template_safe('hod_view_faculty.html', request, ctx)
 
 
+@app.post('/hod/faculty/add')
+def hod_add_faculty(request: Request, username: str = Form(...), password: str = Form(...), dept: str = Form(None), db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    if db.query(User).filter(User.username == username).first():
+        flash(request, f'Username "{username}" already exists', 'danger')
+    else:
+        new_fac = User(username=username, role='Faculty', dept=dept)
+        new_fac.set_password(password)
+        db.add(new_fac)
+        db.commit()
+        flash(request, f'Faculty "{username}" added successfully', 'success')
+    return RedirectResponse('/hod/faculty', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post('/hod/faculty/{fid}/delete')
+def hod_delete_faculty(request: Request, fid: int, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    fac = db.query(User).filter(User.id == fid, User.role == 'Faculty').first()
+    if fac:
+        db.delete(fac)
+        db.commit()
+        flash(request, 'Faculty removed successfully', 'success')
+    else:
+        flash(request, 'Faculty not found', 'warning')
+    return RedirectResponse('/hod/faculty', status_code=status.HTTP_303_SEE_OTHER)
+
+
 @app.get('/hod/students', response_class=HTMLResponse)
 def hod_view_students(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['HOD'])
@@ -478,6 +501,42 @@ def hod_view_students(request: Request, db: Session = Depends(get_db)):
     
     ctx = {'request': request, 'user': user, 'student_data': student_data, 'messages': consume_flash(request)}
     return render_template_safe('hod_view_students.html', request, ctx)
+
+
+@app.post('/hod/students/add')
+def hod_add_student(request: Request, usn: str = Form(...), name: str = Form(...), password: str = Form(...), dept: str = Form(None), semester: int = Form(None), db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    # Check if a user with this username or a student with this USN already exists
+    if db.query(Student).filter(Student.usn == usn).first() or db.query(User).filter(User.username == usn).first():
+        flash(request, f'USN/Username "{usn}" already exists', 'danger')
+    else:
+        # Create student record
+        new_student = Student(usn=usn, name=name, dept=dept, semester=semester)
+        db.add(new_student)
+        # Create user account for login
+        new_user = User(username=usn, role='Student', dept=dept)
+        new_user.set_password(password)
+        db.add(new_user)
+        db.commit()
+        flash(request, f'Student "{name}" added successfully', 'success')
+    return RedirectResponse('/hod/students', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post('/hod/students/{sid}/delete')
+def hod_delete_student(request: Request, sid: int, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    student = db.query(Student).get(sid)
+    if student:
+        # Also find and delete the user account
+        stu_user = db.query(User).filter(User.username == student.usn).first()
+        if stu_user:
+            db.delete(stu_user)
+        db.delete(student)
+        db.commit()
+        flash(request, 'Student removed successfully', 'success')
+    else:
+        flash(request, 'Student not found', 'warning')
+    return RedirectResponse('/hod/students', status_code=status.HTTP_303_SEE_OTHER)
 
 
 @app.get('/faculty/subjects', response_class=HTMLResponse)

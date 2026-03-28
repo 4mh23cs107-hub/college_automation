@@ -9,6 +9,46 @@
 
   <a href="/dashboard" class="btn btn-back">← Back to Dashboard</a>
 
+  <!-- Add New Student Form -->
+  <div class="card" style="margin-bottom: 30px; padding: 25px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <h2 style="font-size: 1.5em; color: #764ba2; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">➕ Add New Student</h2>
+    <form method="post" action="/hod/students/add" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; align-items: end;">
+      <div class="form-group" style="margin-bottom: 0;">
+        <label style="color: #333; font-weight: 600;">USN</label>
+        <input type="text" name="usn" placeholder="e.g. 1PV24CS001" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;" />
+      </div>
+      <div class="form-group" style="margin-bottom: 0;">
+        <label style="color: #333; font-weight: 600;">Name</label>
+        <input type="text" name="name" placeholder="Full Name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;" />
+      </div>
+      <div class="form-group" style="margin-bottom: 0;">
+        <label style="color: #333; font-weight: 600;">Login Password</label>
+        <input type="password" name="password" placeholder="••••••••" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;" />
+      </div>
+      <div class="form-group" style="margin-bottom: 0;">
+        <label style="color: #333; font-weight: 600;">Semester</label>
+        <select name="semester" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;">
+          <option value="">-- Sem --</option>
+          {% for s in range(1, 9) %}
+          <option value="{{ s }}">Sem {{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom: 0;">
+        <label style="color: #333; font-weight: 600;">Department</label>
+        <select name="dept" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #000;">
+          <option value="">-- Dept --</option>
+          <option value="CSE" {% if user.dept == 'CSE' %}selected{% endif %}>CSE</option>
+          <option value="ISE" {% if user.dept == 'ISE' %}selected{% endif %}>ISE</option>
+          <option value="ECE">ECE</option>
+          <option value="EEE">EEE</option>
+          <option value="AI&ML">AI&ML</option>
+        </select>
+      </div>
+      <button type="submit" style="padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Add Student</button>
+    </form>
+  </div>
+
   {% if messages %}
     {% for message in messages %}
       <div class="alert alert-{{ message.cat if message.cat else 'info' }}" role="alert">{{ message.msg }}</div>
@@ -26,6 +66,7 @@
             <th style="color: #000000; font-weight: bold;">Semester</th>
             <th style="color: #000000; font-weight: bold;">Avg Attendance</th>
             <th style="color: #000000; font-weight: bold;">IA Marks</th>
+            <th style="color: #000000; font-weight: bold;">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +99,11 @@
                 {% else %}
                   No marks
                 {% endif %}
+              </td>
+              <td style="padding: 12px; text-align: center;">
+                <form method="post" action="/hod/students/{{ item.student.id }}/delete" style="display: inline;" onsubmit="return confirm('Delete this student? Their login account, marks, and attendance will be permanently removed.')">
+                  <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: #dc3545;" title="Remove Student">🗑️</button>
+                </form>
               </td>
             </tr>
           {% endfor %}
