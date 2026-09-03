@@ -1,141 +1,101 @@
 {% extends 'base.html' %}
-{% block title %}HOD Dashboard{% endblock %}
+{% block title %}HOD Executive Dashboard{% endblock %}
+
 {% block content %}
-<div class="dashboard-container">
-  <div class="dashboard-header">
-    <h1 style="color: #ffffff;">👔 HOD Dashboard</h1>
-    <p style="color: #e0e0e0;">Welcome, {{ user.username }}!</p>
+<div class="dashboard-container" style="max-width: 1250px; margin: 0 auto; padding: 10px 0 50px;">
+  
+  <!-- Dashboard Hero Header -->
+  <div class="dashboard-header" style="text-align: center; margin-bottom: 40px;">
+    <h1 style="font-size: 2.6rem; font-weight: 800; color: #ffffff; margin-bottom: 8px; text-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+      👔 HOD Executive Control Panel
+    </h1>
+    <p style="font-size: 1.1rem; color: #cbd5e1; max-width: 600px; margin: 0 auto;">
+      Welcome back, <strong style="color: #60a5fa;">{{ user.username }}</strong>! Manage department allocations, monitor faculty workloads, inspect student progress, and review analytics.
+    </p>
   </div>
 
-  <div class="dashboard-grid">
-    <!-- Assign Faculty to Subjects -->
-    <div class="dashboard-card">
-      <div class="card-icon">👨‍💼</div>
-      <h2 style="color: #1a1a2e;">Assign Faculty to Subjects</h2>
-      <p style="color: #666666;">Manage faculty assignments and allocate subjects for the semester.</p>
-      <div class="card-actions">
-        <a href="/hod/assign" class="btn btn-primary">Go to Assignments</a>
+  <!-- Main Action Dashboard Cards -->
+  <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 24px;">
+    
+    <!-- Card 1: Faculty & Subject Allocation -->
+    <div class="dashboard-card" style="background: #ffffff; border-radius: 16px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.8); transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div style="width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; margin-bottom: 18px; box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);">
+          👨‍💼
+        </div>
+        <h2 style="font-size: 1.3rem; font-weight: 700; color: #0f172a; margin: 0 0 10px;">Subject & Faculty Allocation</h2>
+        <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+          Create new subjects, allocate faculty members to courses, and manage active semester assignments.
+        </p>
+      </div>
+      <div class="card-actions" style="margin-top: auto;">
+        <a href="/hod/assign" class="btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #3b82f6, #2563eb);">
+          Allocate Subjects →
+        </a>
       </div>
     </div>
 
-    <!-- Faculty Management Card -->
-    <div class="dashboard-card">
-      <div class="card-icon">👥</div>
-      <h2 style="color: #1a1a2e;">Faculty Management</h2>
-      <p style="color: #666666;">View and manage faculty details and workload allocation.</p>
-      <div class="card-actions">
-        <a href="/hod/faculty" class="btn btn-primary">View Faculty</a>
+    <!-- Card 2: Faculty Management -->
+    <div class="dashboard-card" style="background: #ffffff; border-radius: 16px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.8); transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div style="width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; margin-bottom: 18px; box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);">
+          👥
+        </div>
+        <h2 style="font-size: 1.3rem; font-weight: 700; color: #0f172a; margin: 0 0 10px;">Faculty Roster & Workload</h2>
+        <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+          Add new faculty profiles, view assigned subject workloads, and manage department staffing.
+        </p>
+      </div>
+      <div class="card-actions" style="margin-top: auto;">
+        <a href="/hod/faculty" class="btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+          View Faculty →
+        </a>
       </div>
     </div>
 
-    <!-- Manage Subjects Card -->
-    <div class="dashboard-card">
-      <div class="card-icon">📚</div>
-      <h2 style="color: #1a1a2e;">Manage Subjects</h2>
-      <p style="color: #666666;">Add new subjects, assign faculty, and manage department-wise assignments.</p>
-      <div class="card-actions">
-        <a href="/hod/assign" class="btn btn-primary">Manage Subjects</a>
+    <!-- Card 3: Department Analytics & Reports (NEW!) -->
+    <div class="dashboard-card" style="background: #ffffff; border-radius: 16px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.8); transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div style="width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, #10b981 0%, #047857 100%); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; margin-bottom: 18px; box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);">
+          📊
+        </div>
+        <h2 style="font-size: 1.3rem; font-weight: 700; color: #0f172a; margin: 0 0 10px;">Department Analytics & Insights</h2>
+        <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+          Inspect department pass rates, track subject performance averages, and review low attendance warnings.
+        </p>
+      </div>
+      <div class="card-actions" style="margin-top: auto;">
+        <a href="/hod/analytics" class="btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #10b981, #059669);">
+          Open Analytics →
+        </a>
       </div>
     </div>
 
-    <!-- Student Records Card -->
-    <div class="dashboard-card">
-      <div class="card-icon">👨‍🎓</div>
-      <h2 style="color: #1a1a2e;">Student Records</h2>
-      <p style="color: #666666;">Monitor student data, enrollment, and academic progress.</p>
-      <div class="card-actions">
-        <a href="/hod/students" class="btn btn-primary">View Students</a>
+    <!-- Card 4: Student Academic Records -->
+    <div class="dashboard-card" style="background: #ffffff; border-radius: 16px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.8); transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div style="width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; margin-bottom: 18px; box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);">
+          👨‍🎓
+        </div>
+        <h2 style="font-size: 1.3rem; font-weight: 700; color: #0f172a; margin: 0 0 10px;">Student Records & Marks</h2>
+        <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+          Register new student profiles, view internal assessment scores, and track individual student attendance.
+        </p>
+      </div>
+      <div class="card-actions" style="margin-top: auto;">
+        <a href="/hod/students" class="btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #f59e0b, #d97706);">
+          View Students →
+        </a>
       </div>
     </div>
+
   </div>
 </div>
 
 <style>
-.dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.dashboard-header {
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.dashboard-header h1 {
-  font-size: 2.5em;
-  color: #ffffff;
-  margin-bottom: 5px;
-}
-
-.dashboard-header p {
-  color: #e0e0e0;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.dashboard-card {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.3s;
-}
-
 .dashboard-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.card-icon {
-  font-size: 2.5em;
-  margin-bottom: 10px;
-}
-
-.dashboard-card h2 {
-  font-size: 1.3em;
-  color: #1a1a2e;
-  margin: 10px 0;
-}
-
-.dashboard-card p {
-  color: #666666;
-  margin-bottom: 15px;
-}
-
-.card-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  padding: 8px 12px;
-  background-color: #0066cc;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 0.9em;
-  transition: all 0.3s;
-}
-
-.btn:hover {
-  background-color: #0052a3;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.3) !important;
 }
 </style>
 {% endblock %}

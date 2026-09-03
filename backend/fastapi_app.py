@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from sqlalchemy.orm import declarative_base, relationship, Session
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, func
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -257,9 +257,30 @@ def logout(request: Request):
     return RedirectResponse('/login', status_code=status.HTTP_303_SEE_OTHER)
 
 
+def get_or_create_student_profile(db: Session, user: User) -> Student:
+    if not user:
+        return None
+    clean_usn = user.username.strip()
+    student = db.query(Student).filter(Student.usn == clean_usn).first()
+    if not student:
+        student = db.query(Student).filter(func.lower(Student.usn) == func.lower(clean_usn)).first()
+    if not student and user.role == 'Student':
+        student = Student(
+            usn=clean_usn,
+            name=clean_usn,
+            dept=user.dept or 'CSE',
+            semester=1
+        )
+        db.add(student)
+        db.commit()
+        db.refresh(student)
+    return student
+
+
 @app.get('/dashboard', response_class=HTMLResponse)
 def dashboard(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db)
+    ctx = {'request': request, 'user': user, 'messages': consume_flash(request)}
     if user.role == 'Admin':
         template = 'dashboard_admin.html'
     elif user.role == 'HOD':
@@ -268,14 +289,36 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
         template = 'dashboard_faculty.html'
     else:
         template = 'dashboard_student.html'
-    ctx = {'request': request, 'user': user, 'messages': consume_flash(request)}
+        student = get_or_create_student_profile(db, user)
+        attendance = db.query(Attendance).filter(Attendance.student_id == student.id).all() if student else []
+        marks = db.query(Marks).filter(Marks.student_id == student.id).all() if student else []
+        
+        avg_attendance = 0.0
+        if attendance:
+            total_att = sum([a.attended for a in attendance])
+            total_tot = sum([a.total for a in attendance if a.total])
+            avg_attendance = round((total_att / total_tot * 100), 1) if total_tot > 0 else 0.0
+            
+        ctx.update({
+            'student': student,
+            'attendance': attendance,
+            'marks': marks,
+            'avg_attendance': avg_attendance,
+            'enrolled_subjects_count': max(len(attendance), len(marks))
+        })
     return render_template_safe(template, request, ctx)
+
 
 
 @app.get('/faculty/enter', response_class=HTMLResponse)
 def faculty_enter(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['Faculty'])
-    assigned = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    assigned = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all() if a.subject]
+    if not assigned:
+        if user.dept:
+            assigned = db.query(Subject).filter(Subject.dept == user.dept).all()
+        if not assigned:
+            assigned = db.query(Subject).all()
     students = db.query(Student).all()
     marks = db.query(Marks).all()
     attendance = db.query(Attendance).all()
@@ -289,6 +332,7 @@ def faculty_enter(request: Request, db: Session = Depends(get_db)):
         'messages': consume_flash(request),
     }
     return render_template_safe('faculty_enter.html', request, ctx)
+
 
 
 @app.post('/faculty/enter/marks')
@@ -324,53 +368,73 @@ def faculty_enter_attendance(request: Request, student: int = Form(...), subject
 @app.get('/student/view', response_class=HTMLResponse)
 def student_view(request: Request, type: str = None, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['Student'])
-    student = db.query(Student).filter(Student.usn == user.username).first()
-    if not student:
-        flash(request, 'Student record not found', 'warning')
-        ctx = {'request': request, 'user': user, 'student': None, 'messages': consume_flash(request), 'view_type': type}
-        return render_template_safe('student_view.html', request, ctx)
+    student = get_or_create_student_profile(db, user)
     
-    # Query marks and attendance
-    marks = db.query(Marks).filter(Marks.student_id == student.id).all()
-    attendance = db.query(Attendance).filter(Attendance.student_id == student.id).all()
+    marks = db.query(Marks).filter(Marks.student_id == student.id).all() if student else []
+    attendance = db.query(Attendance).filter(Attendance.student_id == student.id).all() if student else []
     
-    # Filter based on view_type parameter
     marks_data = []
     attendance_data = []
     sgpa = 0.0
     
     if type == 'marks':
-        # Only include marks data
         for m in marks:
             total = (m.internal or 0) + (m.external or 0)
-            marks_data.append({'subject': m.subject.name, 'internal': m.internal, 'external': m.external, 'total': total})
+            sub_name = m.subject.name if m.subject else "Subject"
+            marks_data.append({'subject': sub_name, 'internal': m.internal, 'external': m.external, 'total': total})
     elif type == 'attendance':
-        # Only include attendance data
         attendance_data = attendance
     elif type == 'sgpa':
-        # Calculate SGPA for current semester
         if marks:
             total_marks = sum([(m.internal or 0) + (m.external or 0) for m in marks])
-            max_marks = len(marks) * 100  # Assuming max 100 per subject
-            sgpa = (total_marks / max_marks * 10) if max_marks > 0 else 0  # Convert to 10-point scale
+            max_marks = len(marks) * 100
+            sgpa = round((total_marks / max_marks * 10), 2) if max_marks > 0 else 0.0
     else:
-        # Default: show both
         for m in marks:
             total = (m.internal or 0) + (m.external or 0)
-            marks_data.append({'subject': m.subject.name, 'internal': m.internal, 'external': m.external, 'total': total})
+            sub_name = m.subject.name if m.subject else "Subject"
+            marks_data.append({'subject': sub_name, 'internal': m.internal, 'external': m.external, 'total': total})
         attendance_data = attendance
     
-    ctx = {'request': request, 'user': user, 'student': student, 'marks': marks_data, 'attendance': attendance_data, 'sgpa': sgpa, 'messages': consume_flash(request), 'view_type': type}
+    ctx = {
+        'request': request,
+        'user': user,
+        'student': student,
+        'marks': marks_data,
+        'attendance': attendance_data,
+        'sgpa': sgpa,
+        'messages': consume_flash(request),
+        'view_type': type
+    }
     return render_template_safe('student_view.html', request, ctx)
 
 
+
+DEPARTMENTS = ['CSE', 'ISE', 'ECE', 'EEE', 'ME', 'CE', 'AI&ML', 'DS']
+
 @app.get('/hod/assign', response_class=HTMLResponse)
-def hod_assign(request: Request, db: Session = Depends(get_db)):
+def hod_assign(request: Request, dept: str = None, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['HOD'])
-    faculties = db.query(User).filter(User.role == 'Faculty').all()
-    subjects = db.query(Subject).all()
+    filter_dept = dept or user.dept
+    faculties_query = db.query(User).filter(User.role == 'Faculty')
+    subjects_query = db.query(Subject)
+    if filter_dept:
+        faculties = faculties_query.filter(User.dept == filter_dept).all()
+        subjects = subjects_query.filter(Subject.dept == filter_dept).all()
+    else:
+        faculties = faculties_query.all()
+        subjects = subjects_query.all()
     assignments = db.query(FacultyAssignment).all()
-    ctx = {'request': request, 'user': user, 'faculties': faculties, 'subjects': subjects, 'assignments': assignments, 'messages': consume_flash(request)}
+    ctx = {
+        'request': request,
+        'user': user,
+        'faculties': faculties,
+        'subjects': subjects,
+        'assignments': assignments,
+        'departments': DEPARTMENTS,
+        'selected_dept': filter_dept,
+        'messages': consume_flash(request)
+    }
     return render_template_safe('hod_assign.html', request, ctx)
 
 
@@ -388,10 +452,36 @@ def hod_assign_post(request: Request, faculty: int = Form(...), subject: int = F
     return RedirectResponse('/hod/assign', status_code=status.HTTP_303_SEE_OTHER)
 
 
+@app.post('/hod/subjects/add')
+def hod_add_subject(request: Request, code: str = Form(...), name: str = Form(...), dept: str = Form(None), semester: int = Form(None), db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    existing = db.query(Subject).filter(Subject.code == code).first()
+    if existing:
+        flash(request, 'Subject code already exists', 'warning')
+    else:
+        subject = Subject(code=code, name=name, dept=dept or user.dept, semester=semester)
+        db.add(subject)
+        db.commit()
+        flash(request, 'Subject added successfully', 'success')
+    return RedirectResponse('/hod/assign', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post('/hod/assign/{aid}/delete')
+def hod_delete_assignment(request: Request, aid: int, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    assignment = db.query(FacultyAssignment).filter(FacultyAssignment.id == aid).first()
+    if assignment:
+        db.delete(assignment)
+        db.commit()
+        flash(request, 'Assignment removed successfully', 'success')
+    else:
+        flash(request, 'Assignment not found', 'warning')
+    return RedirectResponse('/hod/assign', status_code=status.HTTP_303_SEE_OTHER)
+
+
 @app.get('/hod/faculty', response_class=HTMLResponse)
 def hod_view_faculty(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['HOD'])
-    # Filter faculties by department if HOD has a department assigned
     if user.dept:
         faculties = db.query(User).filter(User.role == 'Faculty', User.dept == user.dept).all()
     else:
@@ -410,31 +500,56 @@ def hod_view_faculty(request: Request, db: Session = Depends(get_db)):
     return render_template_safe('hod_view_faculty.html', request, ctx)
 
 
+@app.post('/hod/faculty/add')
+def hod_add_faculty(request: Request, username: str = Form(...), password: str = Form(...), dept: str = Form(None), db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    existing = db.query(User).filter(User.username == username).first()
+    if existing:
+        flash(request, 'Faculty username already exists', 'warning')
+    else:
+        new_fac = User(username=username, role='Faculty', dept=dept or user.dept)
+        new_fac.set_password(password)
+        db.add(new_fac)
+        db.commit()
+        flash(request, 'Faculty added successfully', 'success')
+    return RedirectResponse('/hod/faculty', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post('/hod/faculty/{fid}/delete')
+def hod_delete_faculty(request: Request, fid: int, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    fac = db.query(User).filter(User.id == fid, User.role == 'Faculty').first()
+    if fac:
+        db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == fid).delete()
+        db.delete(fac)
+        db.commit()
+        flash(request, 'Faculty member removed successfully', 'success')
+    else:
+        flash(request, 'Faculty member not found', 'warning')
+    return RedirectResponse('/hod/faculty', status_code=status.HTTP_303_SEE_OTHER)
+
+
 @app.get('/hod/students', response_class=HTMLResponse)
 def hod_view_students(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['HOD'])
-    # Filter students by department if HOD has a department assigned
     if user.dept:
         students = db.query(Student).filter(Student.dept == user.dept).all()
     else:
         students = db.query(Student).all()
     
-    # Enrich student data with attendance and marks information
     student_data = []
     for student in students:
         attendance_records = db.query(Attendance).filter(Attendance.student_id == student.id).all()
         marks_records = db.query(Marks).filter(Marks.student_id == student.id).all()
         
-        # Calculate average attendance
         avg_attendance = 0
         if attendance_records:
             total_percentage = sum([(a.attended / a.total * 100) if a.total else 0 for a in attendance_records])
             avg_attendance = total_percentage / len(attendance_records)
         
-        # Get IA marks from marks table (assuming internal is IA marks)
         ia_marks = []
         for mark in marks_records:
-            if mark.internal is not None:
+            if mark.internal is not None and mark.subject:
                 ia_marks.append({
                     'subject': mark.subject.name,
                     'ia_marks': mark.internal
@@ -451,6 +566,127 @@ def hod_view_students(request: Request, db: Session = Depends(get_db)):
     return render_template_safe('hod_view_students.html', request, ctx)
 
 
+@app.post('/hod/students/add')
+def hod_add_student(request: Request, usn: str = Form(...), name: str = Form(...), password: str = Form(...), semester: int = Form(None), dept: str = Form(None), db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    student_dept = dept or user.dept or 'CSE'
+    existing_usn = db.query(Student).filter(Student.usn == usn).first()
+    existing_user = db.query(User).filter(User.username == usn).first()
+    if existing_usn or existing_user:
+        flash(request, 'Student USN already exists', 'warning')
+    else:
+        u = User(username=usn, role='Student', dept=student_dept)
+        u.set_password(password)
+        db.add(u)
+        st = Student(usn=usn, name=name, dept=student_dept, semester=semester)
+        db.add(st)
+        db.commit()
+        flash(request, 'Student added successfully', 'success')
+    return RedirectResponse('/hod/students', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post('/hod/students/{sid}/delete')
+def hod_delete_student(request: Request, sid: int, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    st = db.query(Student).filter(Student.id == sid).first()
+    if st:
+        db.query(Marks).filter(Marks.student_id == sid).delete()
+        db.query(Attendance).filter(Attendance.student_id == sid).delete()
+        db.query(User).filter(User.username == st.usn).delete()
+        db.delete(st)
+        db.commit()
+        flash(request, 'Student record deleted successfully', 'success')
+    else:
+        flash(request, 'Student not found', 'warning')
+    return RedirectResponse('/hod/students', status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.get('/hod/analytics', response_class=HTMLResponse)
+def hod_analytics(request: Request, db: Session = Depends(get_db)):
+    user = require_role(request, db, roles=['HOD'])
+    dept = user.dept
+    
+    if dept:
+        students = db.query(Student).filter(Student.dept == dept).all()
+        subjects = db.query(Subject).filter(Subject.dept == dept).all()
+        faculties = db.query(User).filter(User.role == 'Faculty', User.dept == dept).all()
+    else:
+        students = db.query(Student).all()
+        subjects = db.query(Subject).all()
+        faculties = db.query(User).filter(User.role == 'Faculty').all()
+        
+    student_ids = [s.id for s in students]
+    
+    attendance_records = db.query(Attendance).filter(Attendance.student_id.in_(student_ids)).all() if student_ids else []
+    marks_records = db.query(Marks).filter(Marks.student_id.in_(student_ids)).all() if student_ids else []
+    
+    total_students = len(students)
+    total_faculties = len(faculties)
+    total_subjects = len(subjects)
+    
+    overall_attendance_pct = 0.0
+    low_attendance_list = []
+    
+    if attendance_records:
+        total_att = sum([a.attended for a in attendance_records])
+        total_tot = sum([a.total for a in attendance_records if a.total])
+        overall_attendance_pct = round((total_att / total_tot * 100), 1) if total_tot > 0 else 0.0
+        
+        for st in students:
+            st_att = [a for a in attendance_records if a.student_id == st.id]
+            if st_att:
+                st_attended = sum([a.attended for a in st_att])
+                st_total = sum([a.total for a in st_att if a.total])
+                pct = round((st_attended / st_total * 100), 1) if st_total > 0 else 0
+                if pct < 75:
+                    low_attendance_list.append({
+                        'student': st,
+                        'attendance_pct': pct,
+                        'attended': st_attended,
+                        'total': st_total
+                    })
+    
+    subject_analytics = []
+    for sub in subjects:
+        sub_marks = [m for m in marks_records if m.subject_id == sub.id]
+        sub_att = [a for a in attendance_records if a.subject_id == sub.id]
+        
+        avg_internal = round(sum([m.internal or 0 for m in sub_marks]) / len(sub_marks), 1) if sub_marks else 0.0
+        avg_external = round(sum([m.external or 0 for m in sub_marks]) / len(sub_marks), 1) if sub_marks else 0.0
+        
+        sub_att_tot = sum([a.total for a in sub_att if a.total])
+        sub_att_done = sum([a.attended for a in sub_att])
+        sub_att_pct = round((sub_att_done / sub_att_tot * 100), 1) if sub_att_tot > 0 else 0.0
+        
+        assignment = db.query(FacultyAssignment).filter(FacultyAssignment.subject_id == sub.id).first()
+        fac_name = assignment.faculty.username if assignment and assignment.faculty else 'Unassigned'
+        
+        subject_analytics.append({
+            'subject': sub,
+            'assigned_faculty': fac_name,
+            'avg_internal': avg_internal,
+            'avg_external': avg_external,
+            'avg_total': avg_internal + avg_external,
+            'avg_attendance_pct': sub_att_pct,
+            'enrolled_count': len(sub_marks) or len(sub_att) or len(students)
+        })
+        
+    ctx = {
+        'request': request,
+        'user': user,
+        'total_students': total_students,
+        'total_faculties': total_faculties,
+        'total_subjects': total_subjects,
+        'overall_attendance_pct': overall_attendance_pct,
+        'low_attendance_list': low_attendance_list,
+        'subject_analytics': subject_analytics,
+        'messages': consume_flash(request)
+    }
+    return render_template_safe('hod_analytics.html', request, ctx)
+
+
+
+
 @app.get('/faculty/subjects', response_class=HTMLResponse)
 def faculty_view_subjects(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['Faculty'])
@@ -463,10 +699,14 @@ def faculty_view_subjects(request: Request, db: Session = Depends(get_db)):
 @app.get('/faculty/marks', response_class=HTMLResponse)
 def faculty_view_marks(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['Faculty'])
-    assigned_subjects = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    assigned_subjects = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all() if a.subject]
+    if not assigned_subjects:
+        if user.dept:
+            assigned_subjects = db.query(Subject).filter(Subject.dept == user.dept).all()
+        if not assigned_subjects:
+            assigned_subjects = db.query(Subject).all()
     assigned_subject_ids = [s.id for s in assigned_subjects]
     students = db.query(Student).all()
-    # Only show marks for assigned subjects
     marks = db.query(Marks).filter(Marks.subject_id.in_(assigned_subject_ids)).all() if assigned_subject_ids else []
     ctx = {
         'request': request,
@@ -484,10 +724,14 @@ def faculty_view_marks(request: Request, db: Session = Depends(get_db)):
 @app.get('/faculty/attendance', response_class=HTMLResponse)
 def faculty_view_attendance(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['Faculty'])
-    assigned_subjects = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all()]
+    assigned_subjects = [a.subject for a in db.query(FacultyAssignment).filter(FacultyAssignment.faculty_id == user.id).all() if a.subject]
+    if not assigned_subjects:
+        if user.dept:
+            assigned_subjects = db.query(Subject).filter(Subject.dept == user.dept).all()
+        if not assigned_subjects:
+            assigned_subjects = db.query(Subject).all()
     assigned_subject_ids = [s.id for s in assigned_subjects]
     students = db.query(Student).all()
-    # Only show attendance for assigned subjects
     attendance = db.query(Attendance).filter(Attendance.subject_id.in_(assigned_subject_ids)).all() if assigned_subject_ids else []
     ctx = {
         'request': request,
@@ -500,6 +744,7 @@ def faculty_view_attendance(request: Request, db: Session = Depends(get_db)):
         'view_type': 'attendance'
     }
     return render_template_safe('faculty_enter.html', request, ctx)
+
 
 
 @app.get('/admin/students', response_class=HTMLResponse)
@@ -651,8 +896,7 @@ def download_marks_card(request: Request, card_id: int, db: Session = Depends(ge
         flash(request, 'Marks card not found', 'warning')
         return RedirectResponse('/student/marks-card', status_code=status.HTTP_303_SEE_OTHER)
     
-    # Verify the card belongs to the student
-    student = db.query(Student).filter(Student.usn == user.username).first()
+    student = get_or_create_student_profile(db, user)
     if not student or card.student_id != student.id:
         flash(request, 'You do not have permission to download this card', 'danger')
         return RedirectResponse('/student/marks-card', status_code=status.HTTP_303_SEE_OTHER)
@@ -668,29 +912,31 @@ def download_marks_card(request: Request, card_id: int, db: Session = Depends(ge
 @app.get('/student/marks-card', response_class=HTMLResponse)
 def student_view_marks_card(request: Request, db: Session = Depends(get_db)):
     user = require_role(request, db, roles=['Student'])
-    student = db.query(Student).filter(Student.usn == user.username).first()
-    if not student:
-        flash(request, 'Student record not found', 'warning')
-        ctx = {'request': request, 'user': user, 'marks_card': None, 'messages': consume_flash(request)}
-        return render_template_safe('student_marks_card.html', request, ctx)
-    
-    marks_card = db.query(MarksCard).filter(MarksCard.student_id == student.id).first()
+    student = get_or_create_student_profile(db, user)
+    marks_card = db.query(MarksCard).filter(MarksCard.student_id == student.id).first() if student else None
     ctx = {'request': request, 'user': user, 'student': student, 'marks_card': marks_card, 'messages': consume_flash(request)}
     return render_template_safe('student_marks_card.html', request, ctx)
 
 
 @app.post('/signup')
 def signup(request: Request, username: str = Form(...), password: str = Form(...), role: str = Form('Student'), db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == username).first()
+    clean_username = username.strip()
+    user = db.query(User).filter(func.lower(User.username) == func.lower(clean_username)).first()
     if user:
         flash(request, 'Username already exists', 'danger')
         return RedirectResponse('/signup', status_code=status.HTTP_303_SEE_OTHER)
-    u = User(username=username, role=role)
+    u = User(username=clean_username, role=role)
     u.set_password(password)
     db.add(u)
+    
+    if role == 'Student':
+        st = Student(usn=clean_username, name=clean_username, dept='CSE', semester=1)
+        db.add(st)
+        
     db.commit()
-    flash(request, 'User created', 'success')
+    flash(request, 'User account created successfully! Please log in.', 'success')
     return RedirectResponse('/login', status_code=status.HTTP_303_SEE_OTHER)
+
 
 
 @app.get('/signup', response_class=HTMLResponse)

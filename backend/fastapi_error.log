@@ -1,0 +1,66 @@
+2026-09-03 19:18:27,310 - ERROR - 
+-----
+TIME: 2026-09-03T13:48:27.310867Z
+TEMPLATE: hod_view_faculty.html
+PATH: /hod/faculty
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\Projects\college_automation\backend\fastapi_app.py", line 71, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\poorv\OneDrive\Desktop\Projects\college_automation\frontend\templates\hod_view_faculty.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "C:\Users\poorv\OneDrive\Desktop\Projects\college_automation\frontend\templates\base.html", line 272, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\Projects\college_automation\frontend\templates\hod_view_faculty.html", line 59, in block 'content'
+    <form method="post" action="/hod/faculty/{{ fac_item.faculty.id }}/delete" style="display: inline;" onsubmit="return confirm('Delete this faculty member? All their assignments will be lost.')">
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'faculty'
+
+
+2026-09-03 19:25:16,496 - ERROR - 
+-----
+TIME: 2026-09-03T13:55:16.496778Z
+TEMPLATE: hod_view_faculty.html
+PATH: /hod/faculty
+Traceback (most recent call last):
+  File "C:\Users\poorv\OneDrive\Desktop\Projects\college_automation\backend\fastapi_app.py", line 71, in render_template_safe
+    return templates.TemplateResponse(request, name, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\poorv\OneDrive\Desktop\Projects\college_automation\frontend\templates\hod_view_faculty.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "C:\Users\poorv\OneDrive\Desktop\Projects\college_automation\frontend\templates\base.html", line 272, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\OneDrive\Desktop\Projects\college_automation\frontend\templates\hod_view_faculty.html", line 59, in block 'content'
+    <form method="post" action="/hod/faculty/{{ fac_item.faculty.id }}/delete" style="display: inline;" onsubmit="return confirm('Delete this faculty member? All their assignments will be lost.')">
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\poorv\AppData\Roaming\Python\Python311\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'faculty'
+
+

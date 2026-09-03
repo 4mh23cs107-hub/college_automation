@@ -8,9 +8,26 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Provide an explicit instance_path to avoid pkgutil-based package discovery issues
-instance_path = os.path.join(os.path.dirname(__file__), 'instance')
-app = Flask(__name__, instance_path=instance_path)
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(backend_dir)
+template_dir = os.path.join(project_root, 'frontend', 'templates')
+static_dir = os.path.join(project_root, 'frontend', 'static')
+
+instance_path = os.path.join(backend_dir, 'instance')
+app = Flask(
+    __name__,
+    instance_path=instance_path,
+    template_folder=template_dir,
+    static_folder=static_dir
+)
+
+try:
+    from uvicorn.middleware.wsgi import WSGIMiddleware
+    asgi_app = WSGIMiddleware(app)
+except ImportError:
+    asgi_app = None
+
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret')
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:
