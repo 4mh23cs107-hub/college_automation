@@ -19,18 +19,26 @@
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 30px;">
       <div>
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #ffffff; margin: 0; display: flex; align-items: center; gap: 12px;">
-          <span style="background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-            📖 Academic Marks & Attendance Records
+          <span style="background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+            📖 Academic Marks, SGPA & Attendance Records
           </span>
         </h1>
         <p style="color: #cbd5e1; margin: 5px 0 0; font-size: 1rem;">
-          Official assessment marks and subject attendance uploaded by your faculty
+          Official assessment marks, calculated VTU SGPA, and subject attendance records
         </p>
       </div>
-      <a href="/dashboard" class="btn btn-back" style="margin: 0; padding: 10px 18px; border-radius: 10px;">← Dashboard</a>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button onclick="exportTableToExcel('student-marks-table', '{{ student.usn }}_marksheet.xlsx')" class="btn btn-success" style="padding: 10px 16px;">
+          📊 Export Excel (.xlsx)
+        </button>
+        <button onclick="window.print()" class="btn btn-secondary" style="padding: 10px 16px;">
+          🖨️ Print / Save PDF
+        </button>
+        <a href="/dashboard" class="btn btn-back" style="margin: 0; padding: 10px 18px; border-radius: 10px;">← Dashboard</a>
+      </div>
     </div>
 
-    <!-- Student Details Card Header -->
+    <!-- Student Details & SGPA Header -->
     <div class="card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); color: #ffffff; border-radius: 16px; border: 1px solid rgba(255,255,255,0.12); padding: 26px 30px; margin-bottom: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
         <div>
@@ -43,141 +51,213 @@
           </div>
         </div>
 
-        {% if view_type == 'sgpa' %}
-          <div style="background: rgba(255,255,255,0.08); padding: 16px 24px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); text-align: center;">
-            <span style="font-size: 0.8rem; text-transform: uppercase; color: #cbd5e1; font-weight: 600;">Calculated SGPA</span>
-            <div style="font-size: 2.2rem; font-weight: 800; color: #fbbf24; margin-top: 2px;">{{ sgpa }} / 10</div>
+        <div style="background: rgba(255,255,255,0.08); padding: 18px 28px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); text-align: center;">
+          <span style="font-size: 0.82rem; text-transform: uppercase; color: #cbd5e1; font-weight: 600; letter-spacing: 0.05em;">Calculated SGPA</span>
+          <div style="font-size: 2.5rem; font-weight: 800; color: #fbbf24; margin-top: 2px; text-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);">
+            {{ sgpa_info.sgpa if sgpa_info else '0.00' }} <span style="font-size: 1rem; color: #94a3b8;">/ 10</span>
           </div>
-        {% endif %}
+          <span style="font-size: 0.78rem; color: #a78bfa;">Earned Credits: {{ sgpa_info.earned_credits if sgpa_info else 0 }} / {{ sgpa_info.total_credits if sgpa_info else 0 }}</span>
+        </div>
       </div>
     </div>
 
-    <!-- Marks Section -->
-    {% if view_type != 'attendance' and view_type != 'sgpa' %}
-      <div class="card" style="margin-bottom: 35px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-          <h3 style="font-size: 1.35rem; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 10px;">
-            📝 Internal & External Marks Breakdown
-          </h3>
-          <span class="badge badge-info" style="font-size: 0.85rem; padding: 6px 14px; border-radius: 20px;">
-            {{ marks|length }} Subjects Evaluated
-          </span>
-        </div>
-
-        {% if marks %}
-          <div style="overflow-x: auto;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Subject</th>
-                  <th>Internal Marks (IA)</th>
-                  <th>External Exam</th>
-                  <th>Total Score</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for m in marks %}
-                  <tr>
-                    <td style="font-weight: 700; color: #1e293b;">{{ m.subject }}</td>
-                    <td style="font-weight: 600; color: #0284c7;">{{ m.internal if m.internal is not none else '-' }} / 50</td>
-                    <td style="font-weight: 600; color: #7c3aed;">{{ m.external if m.external is not none else '-' }} / 100</td>
-                    <td style="font-weight: 800; font-size: 1.05rem; color: #059669;">
-                      {{ '%.2f'|format(m.total) }}
-                    </td>
-                    <td>
-                      {% if m.total >= 40 %}
-                        <span class="badge badge-success" style="font-size: 0.82rem;">Pass</span>
-                      {% else %}
-                        <span class="badge badge-danger" style="font-size: 0.82rem;">Pending</span>
-                      {% endif %}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        {% else %}
-          <div style="text-align: center; color: #94a3b8; padding: 36px;">
-            📭 No marks recorded yet for your account by subject teachers.
-          </div>
-        {% endif %}
+    <!-- Visual Chart Section -->
+    {% if marks %}
+    <div class="card" style="margin-bottom: 35px; border-radius: 16px; padding: 24px;">
+      <h3 style="font-size: 1.3rem; color: #0f172a; margin: 0 0 20px;">📊 Subject Performance Breakdown</h3>
+      <div style="max-height: 350px; position: relative;">
+        <canvas id="studentMarksChart"></canvas>
       </div>
+    </div>
     {% endif %}
+
+    <!-- Marks & SGPA Section -->
+    <div class="card" style="margin-bottom: 35px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h3 style="font-size: 1.35rem; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 10px;">
+          📝 Internal, External & Letter Grades Breakdown
+        </h3>
+        <span class="badge badge-info" style="font-size: 0.85rem; padding: 6px 14px; border-radius: 20px;">
+          {{ marks|length }} Subjects Evaluated
+        </span>
+      </div>
+
+      {% if marks %}
+        <div style="overflow-x: auto;">
+          <table id="student-marks-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Subject Name</th>
+                <th>Internal (IA)</th>
+                <th>External Exam</th>
+                <th>Total Score</th>
+                <th>Letter Grade</th>
+                <th>Grade Point (GP)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for m in marks %}
+                <tr>
+                  <td style="font-weight: 700; color: #64748b;">{{ m.code }}</td>
+                  <td style="font-weight: 700; color: #1e293b;">{{ m.subject }}</td>
+                  <td style="font-weight: 600; color: #0284c7;">{{ m.internal }} / 50</td>
+                  <td style="font-weight: 600; color: #7c3aed;">{{ m.external }} / 100</td>
+                  <td style="font-weight: 800; font-size: 1.05rem; color: #059669;">
+                    {{ '%.1f'|format(m.total) }}
+                  </td>
+                  <td>
+                    <span class="badge {% if m.grade in ['O','A+','A'] %}badge-success{% elif m.grade in ['B+','B','C'] %}badge-warning{% else %}badge-danger{% endif %}" style="font-size: 0.88rem; font-weight: 800; padding: 5px 12px;">
+                      {{ m.grade }}
+                    </span>
+                  </td>
+                  <td style="font-weight: 700; color: #1e293b;">{{ m.gp }}</td>
+                  <td>
+                    {% if m.gp > 0 %}
+                      <span class="badge badge-success" style="font-size: 0.82rem;">Pass</span>
+                    {% else %}
+                      <span class="badge badge-danger" style="font-size: 0.82rem;">Fail</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div style="text-align: center; color: #94a3b8; padding: 36px;">
+          📭 No marks recorded yet for your account by subject teachers.
+        </div>
+      {% endif %}
+    </div>
 
     <!-- Attendance Section -->
-    {% if view_type != 'marks' and view_type != 'sgpa' %}
-      <div class="card" style="border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-          <h3 style="font-size: 1.35rem; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 10px;">
-            📍 Subject-Wise Attendance Log
-          </h3>
-          <span class="badge badge-info" style="font-size: 0.85rem; padding: 6px 14px; border-radius: 20px;">
-            {{ attendance|length }} Subjects Tracked
-          </span>
-        </div>
-
-        {% if attendance %}
-          <div style="overflow-x: auto;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Subject Name</th>
-                  <th>Classes Attended</th>
-                  <th>Total Conducted</th>
-                  <th>Attendance Rate %</th>
-                  <th style="text-align: center;">Eligibility Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for a in attendance %}
-                  {% set percentage = (a.attended / a.total * 100) if a.total else 0 %}
-                  <tr>
-                    <td style="font-weight: 700; color: #1e293b;">
-                      {{ a.subject.name if a.subject else 'Subject' }}
-                      {% if a.subject and a.subject.code %}
-                        <span style="font-size: 0.82rem; color: #64748b; font-weight: normal;">({{ a.subject.code }})</span>
-                      {% endif %}
-                    </td>
-                    <td style="font-weight: 600; color: #334155;">{{ a.attended }} classes</td>
-                    <td style="color: #64748b;">{{ a.total }} classes</td>
-                    <td>
-                      <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; max-width: 120px;">
-                          <div style="width: {{ percentage }}%; height: 100%; background: {% if percentage >= 75 %}#10b981{% elif percentage >= 60 %}#f59e0b{% else %}#ef4444{% endif %}; border-radius: 4px;"></div>
-                        </div>
-                        <span style="font-weight: 800; font-size: 0.95rem; color: {% if percentage >= 75 %}#059669{% elif percentage >= 60 %}#d97706{% else %}#dc2626{% endif %};">
-                          {% if a.total %}{{ '%.1f'|format(percentage) }}%{% else %}-{% endif %}
-                        </span>
-                      </div>
-                    </td>
-                    <td style="text-align: center;">
-                      {% if a.total %}
-                        {% if percentage >= 75 %}
-                          <span class="badge badge-success" style="font-size: 0.82rem;">✅ Eligible (&ge;75%)</span>
-                        {% elif percentage >= 60 %}
-                          <span class="badge badge-warning" style="font-size: 0.82rem;">⚠️ Warning (60-74%)</span>
-                        {% else %}
-                          <span class="badge badge-danger" style="font-size: 0.82rem;">❌ Shortage (&lt;60%)</span>
-                        {% endif %}
-                      {% else %}
-                        <span style="color: #94a3b8;">-</span>
-                      {% endif %}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        {% else %}
-          <div style="text-align: center; color: #94a3b8; padding: 36px;">
-            📭 No attendance records recorded yet by your subject teachers.
-          </div>
-        {% endif %}
+    <div class="card" style="border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h3 style="font-size: 1.35rem; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 10px;">
+          📍 Subject-Wise Attendance Log
+        </h3>
+        <span class="badge badge-info" style="font-size: 0.85rem; padding: 6px 14px; border-radius: 20px;">
+          {{ attendance|length }} Subjects Tracked
+        </span>
       </div>
-    {% endif %}
+
+      {% if attendance %}
+        <div style="overflow-x: auto;">
+          <table id="student-attendance-table">
+            <thead>
+              <tr>
+                <th>Subject Name</th>
+                <th>Classes Attended</th>
+                <th>Total Conducted</th>
+                <th>Attendance Rate %</th>
+                <th style="text-align: center;">Eligibility Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for a in attendance %}
+                {% set percentage = (a.attended / a.total * 100) if a.total else 0 %}
+                <tr>
+                  <td style="font-weight: 700; color: #1e293b;">
+                    {{ a.subject.name if a.subject else 'Subject' }}
+                    {% if a.subject and a.subject.code %}
+                      <span style="font-size: 0.82rem; color: #64748b; font-weight: normal;">({{ a.subject.code }})</span>
+                    {% endif %}
+                  </td>
+                  <td style="font-weight: 600; color: #334155;">{{ a.attended }} classes</td>
+                  <td style="color: #64748b;">{{ a.total }} classes</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; max-width: 120px;">
+                        <div style="width: {{ percentage }}%; height: 100%; background: {% if percentage >= 75 %}#10b981{% elif percentage >= 60 %}#f59e0b{% else %}#ef4444{% endif %}; border-radius: 4px;"></div>
+                      </div>
+                      <span style="font-weight: 800; font-size: 0.95rem; color: {% if percentage >= 75 %}#059669{% elif percentage >= 60 %}#d97706{% else %}#dc2626{% endif %};">
+                        {% if a.total %}{{ '%.1f'|format(percentage) }}%{% else %}-{% endif %}
+                      </span>
+                    </div>
+                  </td>
+                  <td style="text-align: center;">
+                    {% if a.total %}
+                      {% if percentage >= 75 %}
+                        <span class="badge badge-success" style="font-size: 0.82rem;">✅ Eligible (&ge;75%)</span>
+                      {% elif percentage >= 60 %}
+                        <span class="badge badge-warning" style="font-size: 0.82rem;">⚠️ Warning (60-74%)</span>
+                      {% else %}
+                        <span class="badge badge-danger" style="font-size: 0.82rem;">❌ Shortage (&lt;60%)</span>
+                      {% endif %}
+                    {% else %}
+                      <span style="color: #94a3b8;">-</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div style="text-align: center; color: #94a3b8; padding: 36px;">
+          📭 No attendance records recorded yet by your subject teachers.
+        </div>
+      {% endif %}
+    </div>
 
   {% endif %}
 
 </div>
+
+<!-- Chart.js Script for Student Performance -->
+{% if marks %}
+<script id="chart-data" type="application/json">
+  {
+    "labels": [{% for m in marks %}"{{ m.subject }}"{% if not loop.last %},{% endif %}{% endfor %}],
+    "internals": [{% for m in marks %}{{ m.internal or 0 }}{% if not loop.last %},{% endif %}{% endfor %}],
+    "externals": [{% for m in marks %}{{ m.external or 0 }}{% if not loop.last %},{% endif %}{% endfor %}]
+  }
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const rawData = document.getElementById('chart-data');
+    if (!rawData) return;
+    const data = JSON.parse(rawData.textContent);
+    const canvas = document.getElementById('studentMarksChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.labels,
+        datasets: [
+          {
+            label: 'Internal Marks (IA)',
+            data: data.internals,
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: '#3b82f6',
+            borderWidth: 1.5
+          },
+          {
+            label: 'External Exam Marks',
+            data: data.externals,
+            backgroundColor: 'rgba(139, 92, 246, 0.7)',
+            borderColor: '#8b5cf6',
+            borderWidth: 1.5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+  });
+</script>
+{% endif %}
+
 {% endblock %}
