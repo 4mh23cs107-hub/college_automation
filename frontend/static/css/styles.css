@@ -218,6 +218,37 @@ nav span.muted {
   margin-bottom: 20px;
 }
 
+.password-input-wrap {
+  position: relative;
+}
+
+.password-input-wrap input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  padding: 6px;
+  line-height: 1;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: none;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover,
+.password-toggle.is-visible {
+  color: var(--primary);
+  transform: translateY(-50%);
+  box-shadow: none;
+}
+
 label {
   display: block;
   font-weight: 600;

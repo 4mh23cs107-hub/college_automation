@@ -211,6 +211,34 @@ def login():
         flash('Invalid credentials', 'danger')
     return render_template('login.html')
 
+@app.route('/reset-password', methods=['GET', 'POST'])
+@login_required
+@role_required('Admin', 'HOD')
+def reset_password():
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '')
+        confirmation = request.form.get('confirmation', '')
+        target = User.query.filter_by(username=username).first()
+
+        if not target:
+            flash('No account was found for that username', 'danger')
+        elif current_user.role == 'HOD' and (
+            target.role not in ('Faculty', 'Student') or target.dept != current_user.dept
+        ):
+            flash('You can only reset passwords for users in your department', 'danger')
+        elif len(password) < 8:
+            flash('Password must contain at least 8 characters', 'danger')
+        elif password != confirmation:
+            flash('Passwords do not match', 'danger')
+        else:
+            target.set_password(password)
+            db.session.commit()
+            flash(f'Password reset successfully for {target.username}', 'success')
+            return redirect(url_for('dashboard'))
+
+    return render_template('reset_password.html')
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':

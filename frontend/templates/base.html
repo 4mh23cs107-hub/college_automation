@@ -28,6 +28,9 @@
 
         {% if user %}
           <span class="muted">{{ user.username }} ({{ user.role }})</span>
+          {% if user.role in ['Admin', 'HOD'] %}
+            <a href="/reset-password">Reset Password</a>
+          {% endif %}
           <a href="/logout">Logout</a>
         {% else %}
           <a href="/login">Login</a>
@@ -80,6 +83,18 @@
         updateThemeUI(newTheme);
       });
     }
+
+    document.querySelectorAll('[data-password-toggle]').forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        const input = document.getElementById(toggle.dataset.passwordToggle);
+        if (!input) return;
+        const showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        toggle.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        toggle.setAttribute('title', showing ? 'Show password' : 'Hide password');
+        toggle.classList.toggle('is-visible', !showing);
+      });
+    });
 
     // Helper function for Exporting Tables to Excel (.xlsx)
     function exportTableToExcel(tableID, filename = 'export_data.xlsx') {

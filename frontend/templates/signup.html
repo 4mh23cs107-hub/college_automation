@@ -15,8 +15,11 @@
       </div>
 
       <div class="form-group">
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Enter a strong password" required />
+        <label for="signup-password">Password</label>
+        <div class="password-input-wrap">
+          <input id="signup-password" type="password" name="password" placeholder="Enter a strong password" required />
+          <button type="button" class="password-toggle" data-password-toggle="signup-password" aria-label="Show password" title="Show password">&#128065;</button>
+        </div>
       </div>
 
       <div class="form-group">

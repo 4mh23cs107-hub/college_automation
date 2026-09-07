@@ -41,8 +41,11 @@
         <input type="text" name="name" placeholder="Student Name" required />
       </div>
       <div class="form-group" style="margin-bottom: 0;">
-        <label>Account Password</label>
-        <input type="password" name="password" placeholder="••••••••" required />
+        <label for="student-password">Account Password</label>
+        <div class="password-input-wrap">
+          <input id="student-password" type="password" name="password" placeholder="••••••••" required />
+          <button type="button" class="password-toggle" data-password-toggle="student-password" aria-label="Show password" title="Show password">&#128065;</button>
+        </div>
       </div>
       <div class="form-group" style="margin-bottom: 0;">
         <label>Semester</label>
